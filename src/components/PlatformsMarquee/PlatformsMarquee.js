@@ -18,7 +18,7 @@ const PlatformsMarquee = () => {
   const trackRef = useRef(null);
 
   const rawDuration = isMobile ? durationMobile : durationDesktop;
-  const durationSec = Number.isFinite(rawDuration) && rawDuration > 0 ? rawDuration : 50;
+  const durationSec = Number.isFinite(rawDuration) && rawDuration > 0 ? rawDuration : 60;
   const loopDuration = Math.max(8, durationSec);
 
   const effectiveUrls = useMemo(() => {

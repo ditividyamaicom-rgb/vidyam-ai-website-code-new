@@ -31,6 +31,19 @@ export function shouldIncludeMarqueeFile(name) {
 
 export function filenamesToUrls(filenames) {
   return filenames
-    .filter(shouldIncludeMarqueeFile)
-    .map((name) => `/images/marquee/${encodeURIComponent(name)}`);
+    .filter((name) => {
+      if (typeof name !== "string" || !name.trim()) {
+        return false;
+      }
+      if (name.startsWith("/")) {
+        return true;
+      }
+      return shouldIncludeMarqueeFile(name);
+    })
+    .map((name) => {
+      if (name.startsWith("/")) {
+        return name;
+      }
+      return `/images/marquee/${encodeURIComponent(name)}`;
+    });
 }

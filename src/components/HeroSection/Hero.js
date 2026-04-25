@@ -34,17 +34,7 @@ const Hero = () => {
           </div>
 
           <div className="hero-body">
-            <div className="logo-body">
-              <img
-                src="/images/fulllogo_transparent_nobuffer.png"
-                className="logo-full"
-                alt="Vidyam AI Logo"
-              ></img>
-            </div>
-            <p>
-              AI <span>research</span> and <span>products</span> that <br></br>
-              transform the education and society
-            </p>
+            <h1 className="hero-title-pill">Redefining Education with AI</h1>
           </div>
           
           {/* Floating Chatbot - Fixed position */}

@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vidyam AI — Redefining Education</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #1a3d2b;
+    --deep: #0e2419;
+    --leaf: #2d6a4f;
+    --sage: #40916c;
+    --mint: #74c69d;
+    --gold: #d4a853;
+    --gold-light: #f0c97a;
+    --cream: #fdf6e3;
+    --off-white: #f5f0e8;
+    --text-dark: #0e1f18;
+    --text-mid: #2d4a38;
+    --text-light: rgba(255,255,255,0.85);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--deep); color: #fff; overflow-x: hidden; padding-top: 72px; }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  /* ===== NAV (exchanged: was carousel/announce styling) ===== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 5%; height: 72px;
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(14px);
+    background: linear-gradient(90deg, var(--leaf), var(--forest));
+    border-bottom: 1px solid rgba(116,198,157,0.2);
+    transition: all 0.3s;
+  }
+  nav.scrolled {
+    background: linear-gradient(90deg, #256346, #0e2419);
+    border-bottom-color: rgba(116,198,157,0.28);
+  }
+  /* CHANGE 4: nav logo uses image */
+  .nav-logo-img { height: 48px; width: auto; max-height: 52px; object-fit: contain; display: block; }
+  .nav-logo-fallback { font-family: 'Caveat', cursive; font-size: 1.7rem; color: var(--gold-light); letter-spacing: 0.02em; text-decoration: none; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--text-light); text-decoration: none; font-size: 0.9rem; font-weight: 500;
+    letter-spacing: 0.04em; transition: color 0.2s; position: relative;
+  }
+  .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1.5px; background: var(--gold); transition: width 0.3s; }
+  .nav-links a:hover { color: #fff; }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    background: var(--gold); color: var(--deep); padding: 0.55rem 1.4rem;
+    border-radius: 100px; font-weight: 700; font-size: 0.88rem; text-decoration: none;
+    letter-spacing: 0.03em; transition: all 0.25s; border: none; cursor: pointer;
+  }
+  .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(212,168,83,0.35); }
+
+  /* ===== ANNOUNCE BAR (exchanged: was nav bar styling) ===== */
+  .announce-bar {
+    position: relative; z-index: 6;
+    background: rgba(14, 36, 25, 0.82);
+    backdrop-filter: blur(16px);
+    padding: 0.55rem 2rem; text-align: center; font-size: 0.82rem; font-weight: 500;
+    color: #fff; letter-spacing: 0.02em;
+    border-bottom: 1px solid rgba(116, 198, 157, 0.12); overflow: hidden;
+    max-height: 12rem; opacity: 1;
+    transition: max-height 0.5s ease, opacity 0.5s ease, padding 0.5s ease, border-width 0.5s;
+  }
+  .announce-bar span, .announce-bar strong { color: #fff; font-weight: 700; }
+  .announce-bar a { color: var(--gold-light); text-decoration: underline; }
+  .announce-ticker { display: inline-block; animation: ticker 55s linear infinite; white-space: nowrap; }
+  @keyframes ticker { 0% { transform: translateX(20%); } 100% { transform: translateX(-100%); } }
+  .announce-bar.announce-bar--dismissed {
+    max-height: 0; padding-top: 0; padding-bottom: 0; opacity: 0; border-width: 0; pointer-events: none;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    /* Content-sized height (avoids a large empty band below the stats / card stack) */
+    min-height: auto;
+    /* Extra top space below the announce (carousel) bar */
+    padding: clamp(3.25rem, 7.5vh, 5.5rem) 0 1.5rem;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(45,106,79,0.5) 0%, transparent 70%),
+      radial-gradient(circle at 80% 80%, rgba(212,168,83,0.08) 0%, transparent 50%),
+      linear-gradient(180deg, #0e2419 0%, #1a3d2b 50%, #0e2419 100%);
+  }
+  .hero-grid-lines {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(116,198,157,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(116,198,157,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 80%);
+  }
+  .particle { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); opacity: 0; animation: float-up var(--dur, 8s) var(--delay, 0s) infinite ease-in-out; }
+  @keyframes float-up { 0% { transform: translateY(0) scale(0); opacity: 0; } 20% { opacity: 0.6; transform: translateY(-20px) scale(1); } 80% { opacity: 0.3; } 100% { transform: translateY(-120px) scale(0.3); opacity: 0; } }
+
+  .hero-content {
+    position: relative; z-index: 2; max-width: 1200px; width: 100%;
+    margin: 0 auto; padding: 0 5%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+  }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(116,198,157,0.12); border: 1px solid rgba(116,198,157,0.25);
+    color: var(--mint); padding: 0.5rem 1.15rem; border-radius: 100px;
+    font-size: clamp(0.75rem, 1.1vw, 0.9rem); font-weight: 600; letter-spacing: 0.04em; text-transform: none;
+    margin: 0 0 0.75rem; animation: fadeInUp 0.8s 0.1s both;
+    line-height: 1.35; font-style: normal;
+  }
+  .hero-tag::before { content: '✦'; font-size: 0.6rem; flex-shrink: 0; }
+  .hero-brand-logo {
+    max-width: min(100%, 300px);
+    width: 100%;
+    margin: 0 0 1.4rem;
+    animation: fadeInUp 0.8s 0.14s both;
+  }
+  .hero-brand-logo img {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .hero-sub {
+    font-size: 1rem; line-height: 1.8; margin-bottom: 2.5rem; max-width: 480px;
+    color: rgba(255,255,255,0.7); animation: fadeInUp 0.8s 0.3s both;
+  }
+  .hero-sub strong { color: #fff; font-weight: 700; }
+
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeInUp 0.8s 0.45s both; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold) 0%, #e8b84b 100%); color: var(--deep);
+    padding: 0.9rem 2rem; border-radius: 100px; font-weight: 700; font-size: 0.95rem;
+    text-decoration: none; letter-spacing: 0.02em; transition: all 0.25s;
+    box-shadow: 0 4px 24px rgba(212,168,83,0.3); display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(212,168,83,0.45); }
+  .btn-secondary {
+    background: transparent; color: #fff; padding: 0.9rem 2rem; border-radius: 100px;
+    font-weight: 600; font-size: 0.95rem; text-decoration: none; letter-spacing: 0.02em;
+    transition: all 0.25s; border: 1.5px solid rgba(255,255,255,0.2);
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.05); }
+
+  .hero-stats { display: flex; gap: 2rem; margin-top: 3rem; animation: fadeInUp 0.8s 0.6s both; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--gold-light); line-height: 1; }
+  .stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.5); margin-top: 0.3rem; letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* hero right — nudge card columns down vs. left copy */
+  .hero-right { position: relative; animation: fadeInRight 1s 0.3s both; margin-top: clamp(0.75rem, 1.6vh, 1.75rem); }
+  .hero-card-stack {
+    position: relative;
+    min-height: 568px;
+    height: auto;
+    --hero-right-col: 242px; /* Teacher Brain + Question Papers column, shifted right */
+    --hero-right-col-nudge-y: 26px; /* shift right column (Teacher Brain + Question Papers) down */
+  }
+  .floating-card {
+    position: absolute; background: rgba(255,255,255,0.06); backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 1.5rem;
+    animation: card-float var(--float-dur, 6s) var(--float-delay, 0s) ease-in-out infinite alternate;
+  }
+  @keyframes card-float { from { transform: translateY(0px) rotate(var(--rot-start, 0deg)); } to { transform: translateY(-16px) rotate(var(--rot-end, 2deg)); } }
+  .card-main {
+    width: 300px; max-width: min(300px, calc(100% - var(--hero-right-col) - 16px));
+    top: calc(20px + var(--hero-right-col-nudge-y, 0px)); left: var(--hero-right-col); right: auto; margin-left: 0; transform: none;
+    z-index: 2;
+    --float-dur: 7s; --rot-start: -1deg; --rot-end: 1deg;
+    background: linear-gradient(135deg, rgba(45,106,79,0.4), rgba(14,36,25,0.6));
+    border-color: rgba(116,198,157,0.2);
+  }
+  .card-main .card-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+  .card-main .card-title { font-family: 'Caveat', cursive; font-size: 1.5rem; color: var(--gold-light); }
+  .card-main .card-desc { font-size: 0.82rem; color: rgba(255,255,255,0.6); margin-top: 0.4rem; line-height: 1.6; }
+  .card-mini { width: 190px; padding: 1rem 1.2rem; border-radius: 14px; }
+  /* Left column: schools (top) → Saarthi (middle) → doubts (bottom) */
+  .card-mini-1 { top: 8px; left: 0; right: auto; --float-dur: 5s; --float-delay: 0.5s; --rot-start: -3deg; --rot-end: 1deg; background: rgba(212,168,83,0.12); border-color: rgba(212,168,83,0.25); }
+  .card-mini-2 { top: 158px; left: 0; right: auto; --float-dur: 6.5s; --float-delay: 1s; --rot-start: 2deg; --rot-end: -1deg; background: rgba(116,198,157,0.1); border-color: rgba(116,198,157,0.2); }
+  .card-mini-3 { top: 308px; left: 0; right: auto; bottom: auto; --float-dur: 8s; --float-delay: 0.3s; --rot-start: -1deg; --rot-end: 3deg; }
+  /* Below Teacher Brain, same horizontal offset as .card-main */
+  .card-mini-4 {
+    top: calc(318px + var(--hero-right-col-nudge-y, 0px)); left: var(--hero-right-col); right: auto; bottom: auto;
+    z-index: 1;
+    --float-dur: 7s; --float-delay: 1.5s; --rot-start: 2deg; --rot-end: -2deg;
+    background: rgba(212,168,83,0.08); border-color: rgba(212,168,83,0.2);
+  }
+  .mini-label { font-size: 0.72rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.3rem; }
+  .mini-value { font-size: 1.3rem; font-weight: 700; color: #fff; }
+  .card-mini-1 .mini-value {
+    font-size: 1.4rem; font-weight: 800; color: #fff; line-height: 1.1; letter-spacing: 0.02em;
+  }
+  .mini-sub { font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-top: 0.1rem; }
+  .mini-dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; display: inline-block; margin-right: 4px; animation: pulse-dot 2s infinite; }
+  @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(0.8)} }
+
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+
+  /* ===== MARQUEE ===== */
+  .marquee-section { padding: 2rem 0; background: var(--leaf); overflow: hidden; }
+  .marquee-track { display: flex; gap: 3rem; animation: marquee 18s linear infinite; width: max-content; }
+  .marquee-item { display: flex; align-items: center; gap: 0.7rem; font-size: 0.88rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(255,255,255,0.8); white-space: nowrap; }
+  .marquee-item .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+  @keyframes marquee { 0%{ transform: translateX(0); } 100%{ transform: translateX(-50%); } }
+
+  /* ===== COMMON ===== */
+  section { position: relative; z-index: 1; }
+  .section-inner { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+  .section-tag { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--mint); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1rem; }
+  .section-tag::before { content: ''; width: 24px; height: 1.5px; background: var(--mint); display: block; }
+  .section-headline { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; line-height: 1.15; margin-bottom: 1rem; }
+  .section-headline .accent { color: var(--gold-light); font-style: italic; }
+  .section-desc { color: rgba(255,255,255,0.55); font-size: 1rem; line-height: 1.75; max-width: 560px; }
+
+  /* ===== PROBLEM — heading spacing + 3 cards in a row (stack on small screens) ===== */
+  .problem-section { padding: 7rem 0 5.25rem; background: linear-gradient(180deg, #0e2419 0%, #12302070 100%); }
+  .problem-section .section-tag { margin-bottom: 1.75rem; }
+  .problem-section .section-headline { margin-bottom: 1.75rem; line-height: 1.2; max-width: 100%; }
+  /* Wider so the subheading fits on one line on typical desktop viewports */
+  .problem-section .section-desc { margin-top: 0.25rem; margin-bottom: 0; max-width: min(100%, 70rem); }
+  .problem-cards-container {
+    margin-top: 3.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem 1.5rem;
+    max-width: 100%;
+    position: relative;
+    overflow: visible;
+    isolation: isolate;
+  }
+  /* Gold line: first in DOM + low z-index so it paints under the cards (not on top) */
+  .problem-gold-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 22px;
+    z-index: 0;
+    pointer-events: none;
+    overflow: visible;
+  }
+  .problem-gold-line-path {
+    fill: none;
+    stroke: rgba(212, 168, 83, 0.5);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+  }
+  .problem-gold-line--active .problem-gold-line-path {
+    animation: problemGoldLineDraw 5.75s cubic-bezier(0.42, 0, 0.2, 1) forwards;
+  }
+  @keyframes problemGoldLineDraw {
+    to { stroke-dashoffset: 0; }
+  }
+  .problem-card {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    /* Frosted glass — line stays under via z-index; low tint keeps readability */
+    background: linear-gradient(165deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.03) 100%);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    border-radius: 20px; padding: 1.5rem 1.35rem 0.7rem; overflow: hidden;
+    min-height: 0;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease, background 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+  .problem-card.card-visible { opacity: 1; transform: translateY(0); }
+  .problem-card:hover {
+    background: linear-gradient(165deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border-color: rgba(116, 198, 157, 0.28);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transform: translateY(-4px);
+  }
+  .problem-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--leaf), transparent); }
+  .problem-persona { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex: 0 0 auto; }
+  .persona-avatar { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+  .persona-avatar.teacher { background: rgba(212,168,83,0.15); border: 1.5px solid rgba(212,168,83,0.3); }
+  .persona-avatar.student { background: rgba(116,198,157,0.12); border: 1.5px solid rgba(116,198,157,0.25); }
+  .persona-avatar.parent { background: rgba(116,198,157,0.1); border: 1.5px solid rgba(116,198,157,0.2); }
+  .persona-name { font-weight: 700; font-size: 0.9rem; }
+  .persona-role { font-size: 0.78rem; color: rgba(255,255,255,0.45); }
+  .thought-bubble {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px; padding: 1rem 1.2rem; font-size: 0.88rem;
+    color: rgba(255,255,255,0.65); line-height: 1.65; font-style: italic; position: relative;
+  }
+  .thought-bubble::before { content: '"'; font-family: 'Playfair Display', serif; font-size: 3rem; color: rgba(255,255,255,0.1); position: absolute; top: -10px; left: 10px; line-height: 1; }
+  .problem-card .thought-bubble { margin-bottom: 10px; }
+  .problem-bubble-spacer {
+    flex: 0 0 auto;
+    min-height: 0;
+    min-width: 0;
+  }
+  .problem-card-figure {
+    margin-top: 0;
+    width: 100%;
+    height: 162px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 auto;
+  }
+  .problem-card-figure img {
+    display: block;
+    width: 100%;
+    max-width: 160px;
+    max-height: 160px;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+  }
+  .problem-card[data-card="0"] .problem-card-figure {
+    height: 196px;
+  }
+  .problem-card[data-card="0"] .problem-card-figure img {
+    max-width: 192px;
+    max-height: 192px;
+  }
+  .problem-card[data-card="2"] .problem-card-figure {
+    height: auto;
+    min-height: 0;
+    justify-content: center;
+  }
+  .problem-card[data-card="2"] .problem-card-figure img {
+    max-width: 240px;
+    max-height: 240px;
+    transform: translateY(-5px);
+  }
+
+  /* Grows on desktop so figure row shares the same top position across the three cards */
+  @media (min-width: 961px) {
+    .problem-cards-container { align-items: stretch; }
+    .problem-card { height: 100%; }
+    .problem-bubble-spacer { flex: 1 1 0; }
+    .problem-cards-container .thought-bubble { font-size: 0.84rem; line-height: 1.6; }
+  }
+
+  @media (max-width: 960px) {
+    .problem-gold-line { display: none; }
+    .problem-cards-container {
+      grid-template-columns: 1fr;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+      gap: 2rem;
+    }
+    .problem-card { padding: 1.75rem 1.5rem 1.1rem; }
+  }
+
+  /* ===== PRODUCTS — CHANGE 5: Teacher Brain on top, gold glow button ===== */
+  .products-section { padding: 5.75rem 0 6.5rem; background: linear-gradient(180deg, #0e2419 0%, #1a3d2b 60%, #0e2419 100%); }
+  .products-header { text-align: center; margin-bottom: 3rem; }
+  .products-header .section-desc { margin: 0 auto; }
+  .products-header .section-tag { margin-bottom: 0.65rem; }
+  .products-header .section-headline { margin-bottom: 0.85rem; }
+
+  /* Teacher Brain box — now on top spanning full width */
+  .teacher-brain-box {
+    background: linear-gradient(135deg, rgba(30,20,5,0.95), rgba(14,36,25,0.9));
+    border: 1.5px solid rgba(212,168,83,0.3);
+    border-radius: 24px; padding: 2rem 2.25rem;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: box-shadow 0.5s, border-color 0.5s;
+    position: relative; overflow: hidden;
+  }
+  .teacher-brain-box::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(212,168,83,0.07), transparent 70%);
+    pointer-events: none;
+  }
+  .teacher-brain-box.powered-on {
+    border-color: var(--gold);
+    box-shadow: 0 0 60px rgba(212,168,83,0.35), 0 0 120px rgba(212,168,83,0.15);
+  }
+  .tb-left { display: flex; align-items: center; gap: 1.15rem; }
+  .tb-brain-icon {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: linear-gradient(135deg, rgba(212,168,83,0.2), rgba(212,168,83,0.05));
+    border: 2px solid rgba(212,168,83,0.4); display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; flex-shrink: 0;
+    transition: box-shadow 0.5s;
+  }
+  .powered-on .tb-brain-icon { box-shadow: 0 0 30px rgba(212,168,83,0.5); }
+  .tb-text .tb-label { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 0.25rem; }
+  .tb-text .tb-name { font-family: 'Playfair Display', serif; font-size: 1.65rem; font-weight: 900; color: var(--gold-light); }
+  .tb-text .tb-desc { font-size: 0.84rem; color: rgba(255,255,255,0.5); margin-top: 0.25rem; max-width: none; width: 100%; line-height: 1.45; }
+  .tb-power-btn {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    background: linear-gradient(135deg, var(--gold), #c8971e);
+    color: var(--deep); padding: 0.72rem 1.45rem; border-radius: 100px;
+    font-weight: 800; font-size: 0.86rem; border: none; cursor: pointer;
+    letter-spacing: 0.03em; transition: all 0.3s; white-space: nowrap; flex-shrink: 0; align-self: center;
+    box-shadow: 0 4px 20px rgba(212,168,83,0.3);
+  }
+  .tb-power-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(212,168,83,0.5); }
+  .tb-power-btn .btn-icon { font-size: 1rem; transition: transform 0.4s; }
+  .powered-on .tb-power-btn .btn-icon { animation: spin-once 0.6s ease; }
+  @keyframes spin-once { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+  @keyframes power-btn-tap {
+    0% { box-shadow: 0 4px 20px rgba(212,168,83,0.35); transform: scale(1); }
+    50% { box-shadow: 0 0 0 4px rgba(212,168,83,0.25), 0 8px 32px rgba(212,168,83,0.5); transform: scale(1.04); }
+    100% { box-shadow: 0 4px 20px rgba(212,168,83,0.3); transform: scale(1); }
+  }
+  .tb-power-btn--pulse { animation: power-btn-tap 0.45s ease 2; }
+
+  /* Product cards grid */
+  .products-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .products-layout.product-cards--hidden { display: none; }
+  .product-card {
+    border-radius: 24px; padding: 2.35rem 2.4rem; position: relative; overflow: hidden;
+    transition: transform 0.35s, box-shadow 0.5s;
+  }
+  .product-card:hover { transform: translateY(-6px); }
+  .product-card.student-card { background: linear-gradient(145deg, #1e4d36 0%, #0e2419 100%); border: 1px solid rgba(116,198,157,0.2); box-shadow: 0 24px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(116,198,157,0.15); }
+  .product-card.school-card { background: linear-gradient(145deg, #3d2e0a 0%, #1a1405 100%); border: 1px solid rgba(212,168,83,0.2); box-shadow: 0 24px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(212,168,83,0.15); }
+  .product-card::after { content: ''; position: absolute; top: -50%; right: -30%; width: 300px; height: 300px; border-radius: 50%; opacity: 0.06; pointer-events: none; }
+  .student-card::after { background: radial-gradient(circle, var(--mint), transparent); }
+  .school-card::after { background: radial-gradient(circle, var(--gold), transparent); }
+  /* Gold glow on powered-on state */
+  .powered-on ~ .products-layout .product-card.student-card,
+  .product-card.student-card.glowing { box-shadow: 0 0 50px rgba(212,168,83,0.3), 0 0 100px rgba(212,168,83,0.1), 0 24px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(116,198,157,0.15); }
+  .product-card.school-card.glowing { box-shadow: 0 0 50px rgba(212,168,83,0.35), 0 0 100px rgba(212,168,83,0.12), 0 24px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(212,168,83,0.15); }
+  .product-badge { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.8rem; border-radius: 100px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.1rem; }
+  .student-card .product-badge { background: rgba(116,198,157,0.15); color: var(--mint); border: 1px solid rgba(116,198,157,0.3); }
+  .school-card .product-badge { background: rgba(212,168,83,0.15); color: var(--gold-light); border: 1px solid rgba(212,168,83,0.3); }
+  .product-icon-large { font-size: 3rem; margin-bottom: 0.95rem; display: block; }
+  .product-name { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; margin-bottom: 0.45rem; }
+  .product-tagline { color: rgba(255,255,255,0.5); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1.5rem; }
+  .feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.62rem; margin-bottom: 1.9rem; }
+  .feature-list li { display: flex; align-items: flex-start; gap: 0.65rem; font-size: 0.86rem; color: rgba(255,255,255,0.75); }
+  .feature-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.65rem; margin-top: 1px; }
+  .student-card .feature-icon { background: rgba(116,198,157,0.2); color: var(--mint); }
+  .school-card .feature-icon { background: rgba(212,168,83,0.2); color: var(--gold-light); }
+  .feature-text { line-height: 1.5; }
+  .feature-text strong { display: block; font-weight: 600; color: #fff; font-size: 0.82rem; }
+  .feature-text span { font-size: 0.76rem; color: rgba(255,255,255,0.45); }
+  .product-cta { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.72rem 1.45rem; border-radius: 100px; font-weight: 700; font-size: 0.86rem; text-decoration: none; transition: all 0.25s; letter-spacing: 0.02em; }
+  .student-card .product-cta { background: var(--sage); color: #fff; }
+  .student-card .product-cta:hover { background: var(--mint); color: var(--deep); transform: translateX(4px); }
+  .school-card .product-cta { background: var(--gold); color: var(--deep); }
+  .school-card .product-cta:hover { background: var(--gold-light); transform: translateX(4px); }
+
+  /* ===== ECOSYSTEM ===== */
+  .ecosystem-section { padding: 6.25rem 0 7rem; background: #0e2419; }
+  .ecosystem-section .section-tag { margin-bottom: 0.55rem; }
+  .ecosystem-section .section-headline { margin-top: 0; }
+  @media (min-width: 700px) {
+    .ecosystem-section .section-headline { white-space: nowrap; }
+  }
+  .ecosystem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; margin-top: 4rem; }
+  .eco-visual { position: relative; height: 450px; }
+  .eco-center {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 150px; height: 150px; background: linear-gradient(135deg, var(--sage), var(--leaf));
+    border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 3; box-shadow: 0 0 0 20px rgba(64,145,108,0.1), 0 0 0 40px rgba(64,145,108,0.05);
+    animation: pulse-ring 3s ease-in-out infinite;
+    padding: 0.35rem 0.5rem;
+    box-sizing: border-box;
+  }
+  @keyframes pulse-ring { 0%,100% { box-shadow: 0 0 0 20px rgba(64,145,108,0.1), 0 0 0 40px rgba(64,145,108,0.05); } 50% { box-shadow: 0 0 0 25px rgba(64,145,108,0.15), 0 0 0 50px rgba(64,145,108,0.07); } }
+  .eco-center .icon { font-size: 2.35rem; }
+  .eco-center-label-row {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;
+    margin-top: 0.12rem; max-width: 100%; flex-wrap: wrap;
+  }
+  .eco-center .label {
+    font-size: 0.58rem; font-weight: 700; letter-spacing: 0.04em; text-transform: none;
+    color: rgba(255,255,255,0.88); margin: 0; line-height: 1.1; text-align: center;
+  }
+  .eco-active-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 6px rgba(34, 197, 94, 0.85);
+    flex-shrink: 0;
+  }
+  .eco-node { position: absolute; width: 90px; height: 90px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1.5px solid; backdrop-filter: blur(8px); transition: transform 0.3s; cursor: default; }
+  .eco-node:hover { transform: scale(1.1); }
+  .eco-node .n-icon { font-size: 1.5rem; }
+  .eco-node .n-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 0.2rem; text-align: center; }
+  .eco-node.student { top: 5%; left: 50%; transform: translateX(-50%); background: rgba(116,198,157,0.1); border-color: rgba(116,198,157,0.3); color: var(--mint); }
+  .eco-node.teacher { top: 50%; left: 5%; transform: translateY(-50%); background: rgba(212,168,83,0.1); border-color: rgba(212,168,83,0.3); color: var(--gold-light); }
+  .eco-node.parent { top: 50%; right: 5%; transform: translateY(-50%); background: rgba(212,168,83,0.1); border-color: rgba(212,168,83,0.3); color: var(--gold-light); }
+  .eco-node.school { bottom: 5%; left: 50%; transform: translateX(-50%); background: rgba(116,198,157,0.1); border-color: rgba(116,198,157,0.3); color: var(--mint); }
+  .eco-lines { position: absolute; inset: 0; }
+  .eco-right h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--gold-light); }
+  .eco-pillar {
+    display: flex; gap: 1rem; margin-bottom: 1.5rem; padding: 1.2rem; border-radius: 14px; background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(212, 168, 83, 0.18);
+    box-shadow: 0 0 0 1px rgba(212, 168, 83, 0.06), 0 0 22px rgba(212, 168, 83, 0.12), 0 0 48px rgba(212, 168, 83, 0.06);
+    transition: all 0.25s;
+  }
+  .eco-pillar:hover { background: rgba(255,255,255,0.06); border-color: rgba(212, 168, 83, 0.28); box-shadow: 0 0 0 1px rgba(212, 168, 83, 0.1), 0 0 28px rgba(212, 168, 83, 0.16), 0 0 56px rgba(212, 168, 83, 0.08); }
+  .eco-pillar-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(64,145,108,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+  .eco-pillar-text h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .eco-pillar-text p { font-size: 0.82rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+  /* ===== CHANGE 2: IMAGE GALLERY ===== */
+  .gallery-section { padding: 2.75rem 0 5rem; background: linear-gradient(180deg, #0e2419, #112e1c); }
+  .gallery-header { text-align: center; margin-bottom: 3rem; }
+  .gallery-track-wrapper { overflow: hidden; position: relative; }
+  .gallery-track-wrapper::before, .gallery-track-wrapper::after {
+    content: ''; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2; pointer-events: none;
+  }
+  .gallery-track-wrapper::before { left: 0; background: linear-gradient(to right, #0e2419, transparent); }
+  .gallery-track-wrapper::after { right: 0; background: linear-gradient(to left, #0e2419, transparent); }
+  .gallery-track { display: flex; gap: 1.5rem; animation: gallery-scroll 44s linear infinite; width: max-content; }
+  .gallery-track:hover { animation-play-state: paused; }
+  @keyframes gallery-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .gallery-item {
+    width: 260px; height: 180px; border-radius: 16px; overflow: hidden; flex-shrink: 0;
+    background: var(--forest); border: 1px solid rgba(255,255,255,0.08);
+    transition: transform 0.3s, border-color 0.3s;
+    position: relative;
+  }
+  .gallery-item:hover { transform: scale(1.04); border-color: rgba(116,198,157,0.3); }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* Demo placeholder image using gradients + emoji */
+  .gallery-demo {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;
+    background: var(--bg, linear-gradient(135deg, #1e4d36, #0e2419));
+    color: rgba(255,255,255,0.5); font-size: 0.78rem; text-align: center;
+  }
+  .gallery-demo .gdemo-icon { font-size: 2.5rem; }
+  .gallery-demo .gdemo-label { font-size: 0.7rem; opacity: 0.5; }
+
+  /* ===== MISSION ===== */
+  .mission-section { padding: 7rem 0; background: linear-gradient(180deg, #0e2419 0%, #1a3d2b 100%); text-align: center; }
+  .mission-statement {
+    color: var(--gold-light);
+    max-width: min(100%, 52rem);
+    margin: 0.75rem auto 0;
+    font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+    line-height: 1.7;
+    text-align: center;
+    font-weight: 500;
+  }
+  .mission-quote { font-family: 'Playfair Display', serif; font-size: clamp(1.55rem, 2.85vw, 2.55rem); font-weight: 700; font-style: italic; line-height: 1.32; color: #fff; max-width: 800px; margin: 3rem auto; position: relative; }
+  .mission-quote::before, .mission-quote::after { font-size: 4.75rem; color: rgba(212,168,83,0.15); line-height: 0; position: absolute; }
+  .mission-quote::before { content: '"'; top: 16px; left: -26px; }
+  .mission-quote::after { content: '"'; bottom: -26px; right: -26px; }
+  .mission-author { display: flex; align-items: center; justify-content: center; gap: 1.3rem; margin-top: 2.25rem; }
+  .author-avatar {
+    width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--sage), var(--leaf));
+    border: 2.5px solid var(--gold);
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 1px rgba(212, 168, 83, 0.15);
+  }
+  .author-avatar img {
+    width: 100%; height: 100%; object-fit: cover; object-position: center top;
+    display: block; border-radius: 50%;
+  }
+  .author-info .name { font-weight: 700; color: var(--gold-light); font-size: 1.12rem; }
+  .author-info .role { font-size: 0.92rem; color: rgba(255,255,255,0.5); }
+  .mission-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 4rem; text-align: left; align-items: stretch; overflow: visible; }
+  .mission-pillar {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(212, 168, 83, 0.22);
+    border-radius: 20px; padding: 2rem;
+    box-shadow:
+      0 0 0 1px rgba(212, 168, 83, 0.07),
+      0 0 20px rgba(212, 168, 83, 0.11),
+      0 0 44px rgba(212, 168, 83, 0.06),
+      0 4px 20px rgba(0,0,0,0.2);
+    transform: scale(1);
+    transition: background 0.45s ease, border-color 0.45s ease, box-shadow 0.5s ease, transform 0.45s cubic-bezier(0.2, 0.75, 0.2, 1);
+  }
+  .mission-pillar:hover:not(.mission-pillar--spotlight) {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(212, 168, 83, 0.32);
+    box-shadow:
+      0 0 0 1px rgba(212, 168, 83, 0.1),
+      0 0 26px rgba(212, 168, 83, 0.16),
+      0 0 52px rgba(212, 168, 83, 0.09),
+      0 6px 22px rgba(0,0,0,0.18);
+    transform: scale(1) translateY(-2px);
+  }
+  .mission-pillar.mission-pillar--spotlight {
+    z-index: 2;
+    background: rgba(255,255,255,0.09);
+    border-color: rgba(212, 168, 83, 0.55);
+    box-shadow: 0 0 0 1px rgba(212, 168, 83, 0.25), 0 0 40px rgba(212, 168, 83, 0.35), 0 0 80px rgba(212, 168, 83, 0.15), 0 12px 32px rgba(0,0,0,0.25);
+    transform: scale(1.07) translateY(-4px);
+  }
+  .mission-pillar.mission-pillar--spotlight:hover { transform: scale(1.07) translateY(-4px); }
+  .pillar-num { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; color: rgba(212,168,83,0.2); line-height: 1; margin-bottom: 0.8rem; }
+  .pillar-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .pillar-desc { font-size: 0.83rem; color: rgba(255,255,255,0.5); line-height: 1.65; }
+
+  /* ===== CHANGE 6: VIDYAM LLM / MODELS SECTION ===== */
+  .models-section { padding: 7rem 0; background: #0e2419; }
+  .models-section .section-desc {
+    max-width: min(100%, 52rem);
+    margin-left: 0;
+    margin-right: auto;
+    text-align: left;
+  }
+  @media (min-width: 1000px) {
+    .models-section .section-desc { white-space: nowrap; }
+  }
+  .models-tab-bar {
+    display: flex;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(212, 168, 83, 0.22);
+    border-radius: 14px; padding: 0.4rem; margin: 3rem 0 0; overflow: visible;
+    box-shadow:
+      0 0 0 1px rgba(212, 168, 83, 0.08),
+      0 0 22px rgba(212, 168, 83, 0.12),
+      0 0 48px rgba(212, 168, 83, 0.07);
+  }
+  .tab-btn {
+    flex: 1; padding: 0.9rem 1.5rem; border-radius: 10px; font-weight: 700; font-size: 0.95rem;
+    cursor: pointer; border: 1px solid transparent; transition: all 0.3s; letter-spacing: 0.02em;
+    background: transparent; color: rgba(255,255,255,0.5);
+  }
+  .tab-btn:hover { color: rgba(255,255,255,0.85); border-color: rgba(212, 168, 83, 0.15); box-shadow: 0 0 16px rgba(212, 168, 83, 0.08); }
+  .tab-btn.active {
+    background: var(--deep); color: #fff;
+    box-shadow: 0 0 0 1px rgba(212, 168, 83, 0.2), 0 2px 12px rgba(0,0,0,0.3), 0 0 20px rgba(212, 168, 83, 0.12);
+  }
+  .tab-content { display: none; margin-top: 2.5rem; }
+  .tab-content.active { display: block; }
+
+  /* Platforms tab */
+  .platform-intro { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 2rem 2.5rem; margin-bottom: 1.5rem; }
+  .platform-intro h3 { font-weight: 700; font-size: 1.05rem; color: #fff; margin-bottom: 0.6rem; }
+  .platform-intro p { color: rgba(255,255,255,0.55); font-size: 0.9rem; line-height: 1.75; }
+  .platform-intro .pi-name { font-style: italic; color: var(--gold-light); font-weight: 700; }
+  .platform-intro a { color: var(--mint); }
+
+  /* Models tab — LLM characteristics */
+  .llm-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; }
+  .llm-text { flex: 1; }
+  .llm-text h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; margin-bottom: 1rem; }
+  .llm-text p { color: rgba(255,255,255,0.55); font-size: 0.92rem; line-height: 1.8; margin-bottom: 0.8rem; }
+  .llm-text a { color: var(--mint); }
+  .llm-robot {
+    width: 140px; height: 140px; flex-shrink: 0; border-radius: 50%;
+    background: linear-gradient(135deg, rgba(116,198,157,0.15), rgba(45,106,79,0.1));
+    border: 2px solid rgba(116,198,157,0.2);
+    display: flex; align-items: center; justify-content: center; font-size: 4rem;
+    animation: bob 4s ease-in-out infinite alternate;
+  }
+  /* placeholder — replace src when real image available */
+  .llm-robot img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; }
+  @keyframes bob { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+  .llm-chars-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; margin: 2.5rem 0 1.5rem; }
+  .llm-chars-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .llm-char-card {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; padding: 1.4rem 1.6rem; transition: all 0.25s;
+  }
+  .llm-char-card:hover { background: rgba(116,198,157,0.07); border-color: rgba(116,198,157,0.2); transform: translateY(-3px); }
+  .llm-char-card h4 { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.4rem; color: var(--gold-light); }
+  .llm-char-card p { font-size: 0.82rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+  /* ===== TEAM ===== */
+  .team-section { padding: 7rem 0; background: linear-gradient(180deg, #0e2419, #1a3d2b); }
+  .team-header { margin-bottom: 4rem; }
+  .team-content { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .team-text-block { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 24px; padding: 2.5rem; }
+  .team-text-block p { color: rgba(255,255,255,0.6); font-size: 1rem; line-height: 1.8; }
+  .team-highlights { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+  .highlight-chip { background: rgba(64,145,108,0.12); border: 1px solid rgba(116,198,157,0.2); border-radius: 12px; padding: 1rem; font-size: 0.82rem; }
+  .highlight-chip .hc-num { font-size: 1.5rem; font-weight: 700; color: var(--gold-light); font-family: 'Playfair Display', serif; }
+  .highlight-chip .hc-label { color: rgba(255,255,255,0.5); margin-top: 0.2rem; }
+  .hiring-box { background: linear-gradient(135deg, rgba(212,168,83,0.12), rgba(212,168,83,0.04)); border: 1.5px solid rgba(212,168,83,0.25); border-radius: 24px; padding: 2.5rem; text-align: center; }
+  .hiring-box .h-emoji { font-size: 3rem; display: block; margin-bottom: 1rem; }
+  .hiring-box h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: var(--gold-light); margin-bottom: 0.8rem; }
+  .hiring-box p { color: rgba(255,255,255,0.55); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1.8rem; }
+  .email-badge { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--deep); border: 1px solid rgba(212,168,83,0.3); color: var(--gold-light); padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: 700; font-size: 0.9rem; text-decoration: none; transition: all 0.25s; }
+  .email-badge:hover { background: rgba(212,168,83,0.1); border-color: var(--gold); }
+
+  /* ===== TESTIMONIALS ===== */
+  .testimonials-section { padding: 4.5rem 0 7rem; background: linear-gradient(180deg, #1a3d2b, #0e2419); overflow-x: hidden; }
+  .testimonials-header { text-align: center; margin-bottom: 4rem; }
+  .intern-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; max-width: 700px; margin: 0 auto; }
+  .intern-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; overflow: visible; transition: all 0.3s; }
+  .intern-card:hover { border-color: rgba(116,198,157,0.25); transform: translateY(-4px); }
+  .intern-card-video {
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, var(--forest), var(--deep));
+    display: flex; align-items: center; justify-content: center; position: relative;
+    border-radius: 20px 20px 0 0;
+    border: 1px solid rgba(212, 168, 83, 0.28);
+    box-shadow:
+      0 0 0 1px rgba(212, 168, 83, 0.1),
+      0 0 28px rgba(212, 168, 83, 0.18),
+      0 0 56px rgba(212, 168, 83, 0.1),
+      inset 0 0 32px rgba(212, 168, 83, 0.08);
+  }
+  .play-btn { width: 52px; height: 52px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; border: 2px solid rgba(255,255,255,0.3); transition: all 0.25s; cursor: pointer; }
+  .intern-card:hover .play-btn { background: var(--gold); border-color: var(--gold); transform: scale(1.1); }
+  .intern-card-info { padding: 1.2rem; border-radius: 0 0 20px 20px; }
+  .intern-name { font-weight: 700; font-size: 0.95rem; }
+  .intern-role { font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-top: 0.2rem; }
+
+  /* ===== FOOTER ===== */
+  footer { background: var(--deep); border-top: 1px solid rgba(212, 168, 83, 0.15); padding: 3rem 5%; color: var(--gold-light); }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 2rem; }
+  .footer-logo-img { height: 72px; width: auto; max-height: 88px; object-fit: contain; }
+  .footer-logo-fallback { font-family: 'Caveat', cursive; font-size: 2.6rem; color: var(--gold-light); }
+  .footer-tagline { font-size: 0.85rem; color: var(--gold-light); letter-spacing: 0.08em; }
+  .footer-socials { display: flex; gap: 1rem; }
+  .social-btn { width: 44px; height: 44px; border-radius: 50%; background: rgba(212, 168, 83, 0.08); border: 1px solid rgba(212, 168, 83, 0.2); display: flex; align-items: center; justify-content: center; color: var(--gold-light); text-decoration: none; font-size: 1rem; transition: all 0.25s; }
+  .social-btn:hover { background: rgba(212, 168, 83, 0.18); border-color: rgba(240, 201, 122, 0.45); color: #fff4d4; transform: translateY(-2px); }
+  .footer-contact { display: flex; gap: 2rem; }
+  .footer-contact a { color: var(--gold-light); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+  .footer-contact a:hover { color: #fff4d4; }
+  .footer-copy { font-size: 0.78rem; color: rgba(240, 201, 122, 0.75); text-align: center; }
+
+  /* ===== SCROLL REVEAL ===== */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* ===== MOBILE ===== */
+  @media (max-width: 768px) {
+    .hero-content, .ecosystem-grid, .team-content, .intern-cards, .mission-pillars, .llm-chars-grid { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .nav-links { display: none; }
+    .products-layout { grid-template-columns: 1fr; }
+    .teacher-brain-box { flex-direction: column; text-align: center; }
+    .tb-left { flex-direction: column; align-items: center; }
+    .llm-header { flex-direction: column; }
+    .problem-section .section-tag { margin-bottom: 1.25rem; }
+    .problem-section .section-headline { margin-bottom: 1.25rem; }
+    .problem-cards-container { margin-top: 2.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <!-- CHANGE 4: Logo image — update src to your actual image path -->
+  <a href="#">
+    <img src="images/vidyam-nav-logo.png"
+         alt="Vidyam AI"
+         class="nav-logo-img"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+    <span class="nav-logo-fallback" style="display:none">Vidyam AI</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About Us</a></li>
+    <li><a href="#models">Platform &amp; Models</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#careers">Career</a></li>
+    <li><a href="#contact">Contact Us</a></li>
+  </ul>
+  <a href="#" class="nav-cta">Login / Sign Up</a>
+</nav>
+
+<!-- ANNOUNCE BAR -->
+<div class="announce-bar" id="announceBar">
+  <div class="announce-ticker" aria-label="News and announcements">
+    <span>🎉 <strong>Vidyam LLM is here!</strong> — India's first AI aligned with NCERT Syllabus and Grade Levels.</span> &nbsp;&nbsp;<a href="/blog/vidyam-llm">Learn more</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp;
+    <span>The School Copilot AI Android app is now available on the Play Store. Download now!</span> &nbsp;&nbsp;<a href="https://play.google.com/store/apps/details?id=ai.schoolcopilot.app&amp;pcampaignid=web_share" target="_blank" rel="noopener noreferrer">Click here</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp;
+    <span>Personalized learning powered by AI, based on NCERT Taxonomy and pedagogy, to enable overall growth and to make difficult concepts easier for you to understand!</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp;
+    <span>🎉 <strong>Vidyam LLM is here!</strong> — India's first AI aligned with NCERT Syllabus and Grade Levels.</span> &nbsp;&nbsp;<a href="/blog/vidyam-llm">Learn more</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp;
+    <span>The School Copilot AI Android app is now available on the Play Store. Download now!</span> &nbsp;&nbsp;<a href="https://play.google.com/store/apps/details?id=ai.schoolcopilot.app&amp;pcampaignid=web_share" target="_blank" rel="noopener noreferrer">Click here</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp;
+    <span>Personalized learning powered by AI, based on NCERT Taxonomy and pedagogy, to enable overall growth and to make difficult concepts easier for you to understand!</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="particle" style="left:10%;top:40%;--dur:9s;--delay:0s"></div>
+  <div class="particle" style="left:25%;top:60%;--dur:7s;--delay:1s"></div>
+  <div class="particle" style="left:70%;top:35%;--dur:11s;--delay:2s"></div>
+  <div class="particle" style="left:85%;top:55%;--dur:8s;--delay:0.5s"></div>
+  <div class="particle" style="left:50%;top:70%;--dur:10s;--delay:1.5s"></div>
+
+  <div class="hero-content">
+    <div class="hero-left">
+      <h1 class="hero-tag">Redefining Education with AI</h1>
+      <div class="hero-brand-logo">
+        <img src="images/vidyam-ai-hero-logo.png" width="300" alt="Vidyam AI" decoding="async" fetchpriority="high">
+      </div>
+
+      <p class="hero-sub">
+        Building <strong>AI-native copilots</strong> for students and educators powered by an <strong>AI Teacher Brain</strong>.
+      </p>
+
+      <div class="hero-btns">
+        <a href="#products" class="btn-primary">Explore Products →</a>
+        <a href="#about" class="btn-secondary">Our Mission</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num">8+</div>
+          <div class="stat-label">Schools onboarded</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">NCERT</div>
+          <div class="stat-label">Syllabus Aligned</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">24/7</div>
+          <div class="stat-label">AI Support</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-card-stack">
+        <div class="floating-card card-mini card-mini-1">
+          <div class="mini-label">Schools Onboarded</div>
+          <div class="mini-value">8+</div>
+          <div class="mini-sub">AI Powered institutions growing rapidly</div>
+        </div>
+        <div class="floating-card card-mini card-mini-2">
+          <div class="mini-label"><span class="mini-dot"></span>AI Active</div>
+          <div class="mini-value">Saarthi</div>
+          <div class="mini-sub">Student Copilot</div>
+        </div>
+        <div class="floating-card card-main">
+          <div class="card-icon">🧠</div>
+          <div class="card-title">Teacher Brain™</div>
+          <div class="card-desc">India's first education-native AI engine — trained on pedagogy, NCERT curriculum, and student learning science.</div>
+        </div>
+        <div class="floating-card card-mini card-mini-3">
+          <div class="mini-label">Doubts Solved</div>
+          <div class="mini-value">95%</div>
+          <div class="mini-sub">Accuracy Rate</div>
+        </div>
+        <div class="floating-card card-mini card-mini-4">
+          <div class="mini-label">Question Papers</div>
+          <div class="mini-value">Instant</div>
+          <div class="mini-sub">Auto-generated</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item"><span class="dot"></span>Instant Doubt Solving</div>
+    <div class="marquee-item"><span class="dot"></span>Personalized Learning</div>
+    <div class="marquee-item"><span class="dot"></span>NCERT Aligned</div>
+    <div class="marquee-item"><span class="dot"></span>Teacher Brain™</div>
+    <div class="marquee-item"><span class="dot"></span>Answer Sheet Checking</div>
+    <div class="marquee-item"><span class="dot"></span>Class-Wide Analytics</div>
+    <div class="marquee-item"><span class="dot"></span>WhatsApp Learning</div>
+    <div class="marquee-item"><span class="dot"></span>Student Copilot AI</div>
+    <div class="marquee-item"><span class="dot"></span>School Copilot AI</div>
+    <div class="marquee-item"><span class="dot"></span>Instant Doubt Solving</div>
+    <div class="marquee-item"><span class="dot"></span>Personalized Learning</div>
+    <div class="marquee-item"><span class="dot"></span>NCERT Aligned</div>
+    <div class="marquee-item"><span class="dot"></span>Teacher Brain™</div>
+    <div class="marquee-item"><span class="dot"></span>Answer Sheet Checking</div>
+    <div class="marquee-item"><span class="dot"></span>Class-Wide Analytics</div>
+    <div class="marquee-item"><span class="dot"></span>WhatsApp Learning</div>
+    <div class="marquee-item"><span class="dot"></span>Student Copilot AI</div>
+    <div class="marquee-item"><span class="dot"></span>School Copilot AI</div>
+  </div>
+</div>
+
+<!-- PROBLEM — CHANGE 3: 3 cards appearing one by one -->
+<section class="problem-section" id="about">
+  <div class="section-inner">
+    <div class="section-tag">The Challenge</div>
+    <h2 class="section-headline reveal">
+      The gap between <em class="accent">great teaching</em> and<br>every student.
+    </h2>
+    <p class="section-desc reveal reveal-delay-1">We understand the struggles faced in every classroom — and we&apos;ve built our AI Copilots to solve them and evolve education completely.</p>
+
+    <div class="problem-cards-container" id="problemCards">
+      <svg class="problem-gold-line" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+        <path class="problem-gold-line-path" d="M 1 4 L 50 4 L 99 4" pathLength="100" />
+      </svg>
+      <!-- Card 1: Teacher -->
+      <div class="problem-card" data-card="0">
+        <div class="problem-persona">
+          <div class="persona-avatar teacher">👩‍🏫</div>
+          <div>
+            <div class="persona-name">The Teacher</div>
+            <div class="persona-role">30+ students, limited time</div>
+          </div>
+        </div>
+        <div class="thought-bubble">"Making question papers and checking them takes so long… I still can't tell who's falling behind. I wish I had more time for each student."</div>
+        <div class="problem-bubble-spacer" aria-hidden="true"></div>
+        <div class="problem-card-figure">
+          <img src="images/problem-teacher-figure.png" alt="Illustration representing a teacher" loading="lazy" decoding="async">
+        </div>
+      </div>
+      <!-- Card 2: Student -->
+      <div class="problem-card" data-card="1">
+        <div class="problem-persona">
+          <div class="persona-avatar student">👨‍🎓</div>
+          <div>
+            <div class="persona-name">The Student</div>
+            <div class="persona-role">Confused, hesitant to ask</div>
+          </div>
+        </div>
+        <div class="thought-bubble">"Everyone else seems to get it… why not me? Should I ask again — what if I look weak? Maybe if someone could explain it my way."</div>
+        <div class="problem-bubble-spacer" aria-hidden="true"></div>
+        <div class="problem-card-figure">
+          <img src="images/problem-student-figure.png" alt="Illustration representing a student" loading="lazy" decoding="async">
+        </div>
+      </div>
+      <!-- Card 3: Parent -->
+      <div class="problem-card" data-card="2">
+        <div class="problem-persona">
+          <div class="persona-avatar parent">👨‍👩‍👧</div>
+          <div>
+            <div class="persona-name">The Parent</div>
+            <div class="persona-role">Worried, watching from afar</div>
+          </div>
+        </div>
+        <div class="thought-bubble">"Are these questions really testing their understanding? I can't really tell if my child is truly learning or just memorising."</div>
+        <div class="problem-bubble-spacer" aria-hidden="true"></div>
+        <div class="problem-card-figure">
+          <img src="images/problem-parent-figure.png" alt="Illustration representing a parent" loading="lazy" decoding="async">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS — CHANGE 5: Teacher Brain on top -->
+<section class="products-section" id="products">
+  <div class="section-inner">
+    <div class="products-header">
+      <div class="section-tag">School Ecosystem empowerment</div>
+      <h2 class="section-headline reveal">Two copilots. <em class="accent">One ecosystem.</em></h2>
+      <p class="section-desc reveal reveal-delay-1">Designed for every stakeholder — the student who needs clarity, and the school that needs scale.</p>
+    </div>
+
+    <!-- Teacher Brain box — ABOVE the two product cards -->
+    <div class="teacher-brain-box reveal" id="teacherBrainBox">
+      <div class="tb-left">
+        <div class="tb-brain-icon">🧠</div>
+        <div class="tb-text">
+          <div class="tb-label">Powered by</div>
+          <div class="tb-name">Teacher Brain™</div>
+          <div class="tb-desc">India's education-native AI engine — built on NCERT taxonomy, pedagogy, curriculum science, and student learning data. The intelligence that drives every copilot and creates a connected learning ecosystem that empowers schools and helps every student learn the way education is meant to be experienced.</div>
+        </div>
+      </div>
+      <button type="button" class="tb-power-btn" id="powerBtn" aria-pressed="false" aria-controls="productsLayout" aria-label="Activate the Teacher Brain; reveals copilot cards">
+        <span class="btn-icon" id="powerIcon">⚡</span>
+        Activate the Brain
+      </button>
+    </div>
+
+    <div class="products-layout product-cards--hidden" id="productsLayout" role="region" aria-label="Student and School Copilot" aria-hidden="true">
+      <div class="product-card student-card reveal" id="studentCard">
+        <div class="product-badge">For Students</div>
+        <span class="product-icon-large">🎒</span>
+        <h3 class="product-name">Student Copilot AI</h3>
+        <p class="product-tagline">Meet Saarthi — your always-on AI learning companion. Available on WhatsApp, adapts to your class, pace, and understanding.</p>
+        <ul class="feature-list">
+          <li><div class="feature-icon">✦</div><div class="feature-text"><strong>Instant Doubt Solving</strong><span>Real-time answers that clear confusion</span></div></li>
+          <li><div class="feature-icon">✦</div><div class="feature-text"><strong>Personalized Guidance</strong><span>Learning plans tailored to each student</span></div></li>
+          <li><div class="feature-icon">✦</div><div class="feature-text"><strong>Assignments &amp; Quizzes</strong><span>Practice material to track progress</span></div></li>
+          <li><div class="feature-icon">✦</div><div class="feature-text"><strong>24/7 Support</strong><span>Assistance available anytime, anywhere</span></div></li>
+        </ul>
+        <a href="#" class="product-cta">Try Student Copilot →</a>
+      </div>
+      <div class="product-card school-card reveal reveal-delay-1" id="schoolCard">
+        <div class="product-badge">For Schools</div>
+        <span class="product-icon-large">🏫</span>
+        <h3 class="product-name">School Copilot AI</h3>
+        <p class="product-tagline">The AI operating system for your school. Streamline academics, evaluate at scale, and understand every student's journey.</p>
+        <ul class="feature-list">
+          <li><div class="feature-icon">✦</div><div class="feature-text"><strong>Instant Question Papers</strong><span>Assessments created in moments</span></div></li>
+          <li><div class="feature-icon">✦</div><div class="feature-text"><strong>Answer Sheet Checking</strong><span>Automatic grading for fast feedback</span></div></li>
+          <li><div class="feature-icon">✦</div><div class="feature-text"><strong>Class-Wide Analytics</strong><span>Insights on group performance &amp; trends</span></div></li>
+          <li><div class="feature-icon">✦</div><div class="feature-text"><strong>Learning Trajectory</strong><span>Detailed mapping of each student's journey</span></div></li>
+        </ul>
+        <a href="#" class="product-cta">Try School Copilot →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ECOSYSTEM -->
+<section class="ecosystem-section" id="ecosystem">
+  <div class="section-inner">
+    <div class="section-tag">The Ecosystem</div>
+    <h2 class="section-headline reveal">A connected learning <em class="accent">ecosystem</em></h2>
+    <div class="ecosystem-grid">
+      <div class="eco-visual reveal">
+        <svg class="eco-lines" viewBox="0 0 450 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="225" y1="225" x2="225" y2="55" stroke="rgba(116,198,157,0.2)" stroke-width="1.5" stroke-dasharray="6 4"/>
+          <line x1="225" y1="225" x2="55" y2="225" stroke="rgba(212,168,83,0.2)" stroke-width="1.5" stroke-dasharray="6 4"/>
+          <line x1="225" y1="225" x2="395" y2="225" stroke="rgba(212,168,83,0.2)" stroke-width="1.5" stroke-dasharray="6 4"/>
+          <line x1="225" y1="225" x2="225" y2="395" stroke="rgba(116,198,157,0.2)" stroke-width="1.5" stroke-dasharray="6 4"/>
+        </svg>
+        <div class="eco-node student"><div class="n-icon">🎓</div><div class="n-label">Student</div></div>
+        <div class="eco-node teacher"><div class="n-icon">👩‍🏫</div><div class="n-label">Teacher</div></div>
+        <div class="eco-center">
+          <div class="icon" aria-hidden="true">🧠</div>
+          <div class="eco-center-label-row">
+            <span class="label">Teacher Brain</span>
+            <span class="eco-active-dot" title="Active" aria-label="Active"></span>
+          </div>
+        </div>
+        <div class="eco-node parent"><div class="n-icon">👨‍👩‍👧</div><div class="n-label">Parent</div></div>
+        <div class="eco-node school"><div class="n-icon">🏫</div><div class="n-label">School</div></div>
+      </div>
+      <div class="eco-right reveal reveal-delay-1">
+        <h3>Every stakeholder. One platform.</h3>
+        <div class="eco-pillar"><div class="eco-pillar-icon">🎯</div><div class="eco-pillar-text"><h4>Pedagogy Optimization</h4><p>AI-guided teaching strategies built on learning science principles to maximize classroom impact.</p></div></div>
+        <div class="eco-pillar"><div class="eco-pillar-icon">🗺️</div><div class="eco-pillar-text"><h4>Remediation Pathways</h4><p>Identifies learning gaps and creates personalized catch-up paths for every struggling student.</p></div></div>
+        <div class="eco-pillar"><div class="eco-pillar-icon">📊</div><div class="eco-pillar-text"><h4>Child-Specific Mastery</h4><p>Tracks and adapts to each child's unique progress, ensuring no student is left behind.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHANGE 2: IMAGE GALLERY — under connected learning section -->
+<section class="gallery-section" id="gallery">
+  <div class="section-inner">
+    <div class="gallery-header">
+      <div class="section-tag" style="justify-content:center;">Smiles &amp; Stories</div>
+      <h2 class="section-headline reveal" style="text-align:center">Real classrooms.<br><em class="accent">Real impact.</em></h2>
+    </div>
+  </div>
+  <div class="gallery-track-wrapper">
+    <div class="gallery-track" id="galleryTrack">
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-01.png" alt="Students in line at a school event on the campus" loading="lazy" decoding="async"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-02.png" alt="Vidyam AI outreach — team with students around a laptop" loading="lazy" decoding="async"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-03.png" alt="Students smiling at a laptop during a school tech session" loading="lazy" decoding="async"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-04.png" alt="Award ceremony with partners at Adarsh Bhartiye Vidyalya" loading="lazy" decoding="async"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-05.png" alt="Speaker addressing an audience in an auditorium" loading="lazy" decoding="async"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-06.png" alt="Parent education poster session in Hindi" loading="lazy" decoding="async"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-07.png" alt="Mai student AI copilot — confidence check on a classroom display" loading="lazy" decoding="async"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-08.png" alt="Vidyam AI team member speaking at a school ceremony" loading="lazy" decoding="async"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-09.png" alt="Vidyam AI and partners with a commemorative frame" loading="lazy" decoding="async"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-10.png" alt="Vidyam AI School Copilot and Student Copilot on a large display" loading="lazy" decoding="async"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-11.png" alt="Students focused on classwork in a bright classroom" loading="lazy" decoding="async"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-12.png" alt="Class assessment materials — question paper and OMR sheet" loading="lazy" decoding="async"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-13.png" alt="Shining Star Award — students and mentor with Vidyam AI" loading="lazy" decoding="async"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-14.png" alt="Vidyam AI presentation in a full classroom" loading="lazy" decoding="async"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-15.png" alt="Students in the I Met the Future of Learning photo frame" loading="lazy" decoding="async"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-16.png" alt="Welcome ceremony with student leaders and guests" loading="lazy" decoding="async"></div>
+      <!-- Second copy for seamless horizontal loop -->
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-01.png" alt="" loading="lazy" decoding="async" aria-hidden="true"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-02.png" alt="" loading="lazy" decoding="async" aria-hidden="true"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-03.png" alt="" loading="lazy" decoding="async" aria-hidden="true"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-04.png" alt="" loading="lazy" decoding="async" aria-hidden="true"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-05.png" alt="" loading="lazy" decoding="async" aria-hidden="true"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-06.png" alt="" loading="lazy" decoding="async" aria-hidden="true"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-07.png" alt="" loading="lazy" decoding="async" aria-hidden="true"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-08.png" alt="" loading="lazy" decoding="async" aria-hidden="true"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-09.png" alt="" loading="lazy" decoding="async" aria-hidden="true"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-10.png" alt="" loading="lazy" decoding="async" aria-hidden="true"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-11.png" alt="" loading="lazy" decoding="async" aria-hidden="true"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-12.png" alt="" loading="lazy" decoding="async" aria-hidden="true"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-13.png" alt="" loading="lazy" decoding="async" aria-hidden="true"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-14.png" alt="" loading="lazy" decoding="async" aria-hidden="true"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-15.png" alt="" loading="lazy" decoding="async" aria-hidden="true"></div>
+      <div class="gallery-item"><img src="images/smiles-stories/smiles-16.png" alt="" loading="lazy" decoding="async" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="mission-section" id="mission">
+  <div class="section-inner">
+    <div class="section-tag" style="justify-content:center;">Our Mission</div>
+    <p class="mission-statement reveal">
+      Our mission is to remove disparity in education by building an AI Operating System for education — through School Copilots and Student Copilots powered by an AI Teacher Brain. Guided by pedagogy-first technology, we aim to enable hyperpersonalized learning for every student while empowering educators. We strive to ensure that no learner is left behind in access to quality education.
+    </p>
+    <blockquote class="mission-quote reveal">"AI gives us the power to teach one child at a time, even at the scale of a nation."</blockquote>
+    <div class="mission-author reveal">
+      <div class="author-avatar">
+        <img src="images/mission-founder-akash.png" alt="Akash Srivastav, Founder, Vidyam AI" width="72" height="72" loading="lazy" decoding="async">
+      </div>
+      <div class="author-info">
+        <div class="name">Akash Srivastav</div>
+        <div class="role">Founder, Vidyam AI</div>
+      </div>
+    </div>
+    <div class="mission-pillars" id="missionPillars">
+      <div class="mission-pillar reveal"><div class="pillar-num">01</div><div class="pillar-title">Bridging the Gap</div><p class="pillar-desc">Connecting traditional education with immersive, technology-driven learning experiences for every student.</p></div>
+      <div class="mission-pillar reveal reveal-delay-1"><div class="pillar-num">02</div><div class="pillar-title">India &amp; Beyond</div><p class="pillar-desc">Starting with NCERT-aligned curriculum for Indian schools, with a vision to scale quality education globally.</p></div>
+      <div class="mission-pillar reveal reveal-delay-2"><div class="pillar-num">03</div><div class="pillar-title">Accessible Quality</div><p class="pillar-desc">Making world-class personalized education accessible to every student, regardless of their background.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CHANGE 6: VIDYAM LLM / MODELS SECTION -->
+<section class="models-section" id="models">
+  <div class="section-inner">
+    <div class="section-tag">Our Technology</div>
+    <h2 class="section-headline reveal">Platforms &amp; <em class="accent">Models</em></h2>
+    <p class="section-desc reveal reveal-delay-1">The technology stack powering India's most curriculum-aware AI education system.</p>
+
+    <div class="models-tab-bar reveal reveal-delay-2">
+      <button class="tab-btn active" onclick="switchTab('platforms', this)">Platforms</button>
+      <button class="tab-btn" onclick="switchTab('models', this)">Models</button>
+    </div>
+
+    <!-- PLATFORMS TAB -->
+    <div class="tab-content active" id="tab-platforms">
+      <div class="platform-intro reveal">
+        <h3>Vidyam AI — Building the AI Operating System for Education</h3>
+        <p>AI-native copilots for students and educators powered by an AI Teacher Brain.</p>
+      </div>
+      <div class="platform-intro reveal reveal-delay-1">
+        <h3><span class="pi-name">School Copilot</span> — <a href="https://www.schoolcopilot.ai" target="_blank">www.schoolcopilot.ai</a></h3>
+        <p>An AI copilot designed to power schools through intelligent academic workflows. Guided by pedagogy and learning science, it helps generate exam papers and quizzes (online/offline), evaluate answer sheets (objective/subjective), and create study resources, teaching material, and homework, while enabling fun and interactive learning through our conversational AI, Mai.</p>
+      </div>
+      <div class="platform-intro reveal reveal-delay-2">
+        <h3><span class="pi-name">Student Copilot — Saarthi</span> &nbsp;<small style="font-weight:400"><a href="https://api.whatsapp.com/message/42QFKGNKKU3NN1?autoload=1&amp;app_absent=0" target="_blank" rel="noopener noreferrer">Try on WhatsApp at 7678910123</a></small></h3>
+        <p>A personalized AI learning companion that adapts to each student's class, pace, and understanding. Guided by pedagogy and the goals of the curriculum, Saarthi helps students grasp concepts through relatable examples, solve doubts, and practice with personalized quizzes, bridging learning gaps and making quality learning accessible to every student.</p>
+        <p style="margin-top:0.8rem;font-size:0.85rem;color:rgba(255,255,255,0.4)">Together, these copilots create a connected learning ecosystem that empowers schools and helps every student learn the way education is meant to be experienced.</p>
+      </div>
+    </div>
+
+    <!-- MODELS TAB -->
+    <div class="tab-content" id="tab-models">
+      <div class="llm-header reveal">
+        <div class="llm-text">
+          <h3>Vidyam LLMs: Precision Learning for Every Grade</h3>
+          <p>General-purpose LLMs like ChatGPT often miss the mark in delivering precise educational content tailored to specific curricula. Vidyam LLM bridges this gap by providing clear, curriculum-aligned responses for every grade level.</p>
+          <p>Whether you're in class 6 or class 12, Vidyam LLM ensures that you receive explanations that are directly aligned with your textbooks and syllabus.</p>
+          <p><a href="#">Discover More: Introducing Vidyam LLM →</a></p>
+        </div>
+        <!-- Replace src with your actual robot mascot image -->
+        <div class="llm-robot">
+          <img src="robot-mascot.png" alt="Vidyam AI Robot"
+               onerror="this.style.display='none';this.parentElement.innerHTML='🤖'">
+        </div>
+      </div>
+      <div class="llm-chars-title reveal">Vidyam LLM: Key Characteristics</div>
+      <div class="llm-chars-grid">
+        <div class="llm-char-card reveal">
+          <h4>Curriculum-Specific Models</h4>
+          <p>Vidyam LLM is fine-tuned for the NCERT syllabus, ensuring relevance and accuracy across all subjects and grade levels.</p>
+        </div>
+        <div class="llm-char-card reveal reveal-delay-1">
+          <h4>Subject-Focused</h4>
+          <p>Initially focused on Science for classes 6–12, with future plans to expand to other subjects and curricula.</p>
+        </div>
+        <div class="llm-char-card reveal reveal-delay-2">
+          <h4>Multilingual Support</h4>
+          <p>While currently available in English, we aim to support multiple Indian languages soon to reach every student.</p>
+        </div>
+        <div class="llm-char-card reveal reveal-delay-3">
+          <h4>Grade-Appropriate Responses</h4>
+          <p>The models provide explanations and examples tailored to the students' age and grade level for better understanding.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team-section" id="team">
+  <div class="section-inner">
+    <div class="team-header">
+      <div class="section-tag">The People</div>
+      <h2 class="section-headline reveal">Built by <em class="accent">experts</em>,<br>driven by purpose</h2>
+    </div>
+    <div class="team-content">
+      <div class="team-text-block reveal">
+        <p>Our team at Vidyam AI comprises seasoned professionals with extensive experience in AI research and product development. With backgrounds spanning over 15 years in technology, our co-founders bring a wealth of expertise.</p>
+        <p style="margin-top:1.2rem">From AI cloud services to data science and product management, our diverse skill sets converge to drive innovation and redefine the educational landscape.</p>
+        <div class="team-highlights">
+          <div class="highlight-chip"><div class="hc-num">15+</div><div class="hc-label">Years in Tech</div></div>
+          <div class="highlight-chip"><div class="hc-num">AI</div><div class="hc-label">Cloud + Data Science</div></div>
+          <div class="highlight-chip"><div class="hc-num">🌍</div><div class="hc-label">India-first Focus</div></div>
+          <div class="highlight-chip"><div class="hc-num">🔬</div><div class="hc-label">Research-driven</div></div>
+        </div>
+      </div>
+      <div class="hiring-box reveal reveal-delay-1" id="careers">
+        <span class="h-emoji">🚀</span>
+        <h3>We're Hiring!</h3>
+        <p>If you see yourself contributing to our vision and growing with us, join a team shaping tomorrow's learning. We can't wait to meet you!</p>
+        <a href="mailto:hr@vidyamai.com" class="email-badge">✉️ hr@vidyamai.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERN TESTIMONIALS -->
+<section class="testimonials-section" id="contact">
+  <div class="section-inner">
+    <div class="testimonials-header">
+      <div class="section-tag" style="justify-content:center;">Intern Stories 🎤</div>
+      <h2 class="section-headline reveal" style="text-align:center">Voices from inside<br><em class="accent">Vidyam AI</em></h2>
+    </div>
+    <div class="intern-cards">
+      <div class="intern-card reveal">
+        <div class="intern-card-video"><div class="play-btn">▶</div></div>
+        <div class="intern-card-info">
+          <div class="intern-name">Ishan Katoch</div>
+          <div class="intern-role">Software Developer AI Intern · 0:48</div>
+        </div>
+      </div>
+      <div class="intern-card reveal reveal-delay-1">
+        <div class="intern-card-video"><div class="play-btn">▶</div></div>
+        <div class="intern-card-info">
+          <div class="intern-name">Priyanshu Singh</div>
+          <div class="intern-role">AI Business Analyst Intern · 1:17</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <!-- CHANGE 4: Footer logo image -->
+    <a href="#">
+      <img src="images/vidyam-nav-logo.png" alt="Vidyam AI" class="footer-logo-img"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+      <span class="footer-logo-fallback" style="display:none">Vidyam AI</span>
+    </a>
+    <div class="footer-tagline">Connect. Learn. Grow.</div>
+    <div class="footer-socials">
+      <a href="#" class="social-btn" title="Instagram">📸</a>
+      <a href="#" class="social-btn" title="LinkedIn">💼</a>
+      <a href="#" class="social-btn" title="YouTube">▶</a>
+    </div>
+    <div class="footer-contact">
+      <a href="tel:+919250842794">📞 +91 92508 42794</a>
+      <a href="mailto:hello@vidyamai.com">✉️ hello@vidyamai.com</a>
+    </div>
+    <div class="footer-copy">© 2025 Vidyam AI (Vidyam AI Global Tech-Solutions Pvt. Ltd.) All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  // ── Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 40));
+
+  // ── Announce bar: collapse/fade when user scrolls down; restore when back near the top
+  const announceBar = document.getElementById('announceBar');
+  if (announceBar) {
+    const onAnnounce = () => {
+      const y = window.scrollY || 0;
+      if (y > 96) announceBar.classList.add('announce-bar--dismissed');
+      if (y < 32) announceBar.classList.remove('announce-bar--dismissed');
+    };
+    window.addEventListener('scroll', onAnnounce, { passive: true });
+  }
+
+  // ── Generic scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => revealObs.observe(el));
+
+  // ── CHANGE 3: Sequential problem card reveal + gold connector line
+  const problemSection = document.getElementById('problemCards');
+  if (problemSection) {
+    const problemCards = problemSection.querySelectorAll('.problem-card');
+    const problemGoldLine = problemSection.querySelector('.problem-gold-line');
+    let cardsTriggered = false;
+
+    const problemObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !cardsTriggered) {
+          cardsTriggered = true;
+          if (problemGoldLine) problemGoldLine.classList.add('problem-gold-line--active');
+          problemCards.forEach((card, i) => {
+            setTimeout(() => {
+              card.classList.add('card-visible');
+            }, i * 1100);
+          });
+        }
+      });
+    }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
+    problemObs.observe(problemSection);
+  }
+
+  // ── Mission pillars: in view, spotlight + zoom each card 2s in sequence (once)
+  (function initMissionPillarSpotlight() {
+    const root = document.getElementById('missionPillars');
+    if (!root) return;
+    const cards = root.querySelectorAll('.mission-pillar');
+    if (!cards.length) return;
+    let played = false;
+    const DURATION = 2000;
+    const START_DELAY = 400;
+
+    let io = null;
+    function runSequence() {
+      if (played) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        played = true;
+        if (io) io.unobserve(root);
+        return;
+      }
+      played = true;
+      if (io) io.unobserve(root);
+      let i = 0;
+      function highlightNext() {
+        cards.forEach((c) => c.classList.remove('mission-pillar--spotlight'));
+        if (i >= cards.length) return;
+        const idx = i;
+        cards[idx].classList.add('mission-pillar--spotlight');
+        setTimeout(() => {
+          cards[idx].classList.remove('mission-pillar--spotlight');
+          i = idx + 1;
+          highlightNext();
+        }, DURATION);
+      }
+      setTimeout(highlightNext, START_DELAY);
+    }
+
+    io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((en) => {
+          if (en.isIntersecting) runSequence();
+        });
+      },
+      { threshold: 0, rootMargin: '0px 0px 12% 0px' }
+    );
+    io.observe(root);
+
+    // If already visible on load, IntersectionObserver can be unreliable; run once
+    (function checkAlreadyVisible() {
+      const r = root.getBoundingClientRect();
+      const h = window.innerHeight || 0;
+      if (h > 0 && r.top < h * 0.92 && r.bottom > 60) {
+        setTimeout(runSequence, 200);
+      }
+    })();
+  })();
+
+  // ── Activate the Brain: cards hidden until on; optional idle prompt + auto-on at 6s; off only by user click
+  (function initTeacherBrainPower() {
+    const box = document.getElementById('teacherBrainBox');
+    const btn = document.getElementById('powerBtn');
+    const productsLayout = document.getElementById('productsLayout');
+    const studentCard = document.getElementById('studentCard');
+    const schoolCard = document.getElementById('schoolCard');
+    if (!box || !btn || !productsLayout || !studentCard || !schoolCard) return;
+
+    let isPowered = false;
+    let userTouchedPower = false;
+    let idle6Timer;
+
+    function clearIdleDemos() {
+      if (idle6Timer) clearTimeout(idle6Timer);
+      idle6Timer = null;
+    }
+
+    function applyPowerState(powered) {
+      isPowered = !!powered;
+      if (isPowered) {
+        box.classList.add('powered-on');
+        productsLayout.classList.remove('product-cards--hidden');
+        productsLayout.setAttribute('aria-hidden', 'false');
+        studentCard.classList.add('glowing', 'visible');
+        schoolCard.classList.add('glowing', 'visible');
+        btn.setAttribute('aria-pressed', 'true');
+        btn.innerHTML = '<span class="btn-icon" id="powerIcon">✅</span> Brain activated';
+        btn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+      } else {
+        box.classList.remove('powered-on');
+        productsLayout.classList.add('product-cards--hidden');
+        productsLayout.setAttribute('aria-hidden', 'true');
+        studentCard.classList.remove('glowing', 'visible');
+        schoolCard.classList.remove('glowing', 'visible');
+        btn.setAttribute('aria-pressed', 'false');
+        btn.innerHTML = '<span class="btn-icon" id="powerIcon">⚡</span> Activate the Brain';
+        btn.style.background = '';
+      }
+    }
+
+    function onPowerButtonClick() {
+      if (!userTouchedPower) {
+        userTouchedPower = true;
+        clearIdleDemos();
+      }
+      btn.classList.remove('tb-power-btn--pulse');
+      applyPowerState(!isPowered);
+    }
+
+    function runIdle6Demo() {
+      if (userTouchedPower) return;
+      btn.classList.add('tb-power-btn--pulse');
+      setTimeout(() => {
+        if (userTouchedPower) {
+          btn.classList.remove('tb-power-btn--pulse');
+          return;
+        }
+        btn.classList.remove('tb-power-btn--pulse');
+        applyPowerState(true);
+      }, 900);
+    }
+
+    btn.addEventListener('click', onPowerButtonClick);
+
+    idle6Timer = setTimeout(runIdle6Demo, 6000);
+  })();
+
+  // ── CHANGE 6: Tab switching
+  function switchTab(tabName, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tabName).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // ── Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if (id.length > 1) {
+        e.preventDefault();
+        const el = document.querySelector(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+</body>
+</html>

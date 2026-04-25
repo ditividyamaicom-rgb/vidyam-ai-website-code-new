@@ -85,7 +85,7 @@ function AppContent() {
           {email && <Route path="/chat-classification-filtered" element={<ChatClassificationFiltered/>} />} */}
 
           <Route path="/saarthi/tnc" element={<DisclaimerPage/>} />
-          <Route path="/blog/Vidyam-llm" element={<Blog/>} />
+          <Route path="/blog/vidyam-llm" element={<Blog/>} />
 
 
         </Routes>

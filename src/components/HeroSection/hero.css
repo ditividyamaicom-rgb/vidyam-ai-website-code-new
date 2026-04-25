@@ -149,6 +149,35 @@
 .hero-body {
   position: relative;
   z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-hero .hero-title-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  background: rgba(116, 198, 157, 0.12);
+  border: 1px solid rgba(116, 198, 157, 0.25);
+  color: #74c69d;
+  padding: 0.5rem 1.15rem;
+  border-radius: 100px;
+  font-size: clamp(0.75rem, 2.5vw, 0.95rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.35;
+  font-style: normal;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.home-hero .hero-title-pill::before {
+  content: "✦";
+  font-size: 0.6rem;
+  flex-shrink: 0;
 }
 
 
