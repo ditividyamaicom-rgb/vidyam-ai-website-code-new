@@ -1,0 +1,101 @@
+
+{ "tokenData" : [
+   
+    {
+      "Chapter Name": "Chapter-4-Sorting-Materials-into-Groups",
+      "Question": "Mixtures of red chilli powder in water, butter in water, petrol in water, and honey in water were given to Radha, Sudha, Sofia and Raveena, respectively. Whose mixture is in solution form?",
+      "Answer": "Raveena will get the mixture in solution form. Since, honey and water are soluble with each other hence a solution will be formed when honey is mixed with water.",
+      "Vidyam LLM": "17",
+     "Llama 2 13b": "153",
+     "Mistral 7b": "104",
+     "ChatGPT": "125",
+     "Gemini": "88",
+      "Remarks": {
+       "Question": "Remarks",
+       "Answer": "Detailed explanation.",
+       "Vidyam LLM": "Vidyam LLM took only 17 tokens to generate the answer of the given question.",
+       "Llama 2 13b": "Llama 2 13b took 800% more tokens to generate the answer compared to Vidyam LLM.",
+       "Mistral 7b": "Mistral 7b took 511% more tokens to generate the answer compared to Vidyam LLM.",
+       "ChatGPT": "ChatGPT took 635% more tokens to generate the answer compared to Vidyam LLM.",
+       "Gemini": "Gemini took 417% more tokens to generate the answer compared to Vidyam LLM."
+     }
+     },
+     {
+      "Chapter Name": "Chapter-5-Sepration-of-Substances",
+      "Question": "Name and describe briefly a method which can be helpful in separating a mixture of husk from grains. What is the principle of this method?",
+      "Vidyam LLM": "85",
+     "Llama 2 13b": "230",
+     "Mistral 7b": "319",
+     "ChatGPT": "241",
+     "Gemini": "141",
+      "Remarks": {
+       "Question": "Remarks",
+       "Answer": "Detailed explanation.",
+       "Vidyam LLM": "Vidyam LLM took only 85 tokens to generate the answer of the given question.",
+       "Llama 2 13b": "Llama 2 13b took 117% more tokens to generate the answer compared to Vidyam LLM.",
+       "Mistral 7b": "Mistral 7b took 275% more tokens to generate the answer compared to Vidyam LLM.",
+       "ChatGPT": "ChatGPT took 183% more tokens to generate the answer compared to Vidyam LLM.",
+       "Gemini": "Gemini took 65% more tokens to generate the answer compared to Vidyam LLM."
+     }
+ 
+     },
+     {
+      "Chapter Name": "Chapter-7-Getting-to-Know-Plants",
+      "Question": "Will a leaf taken from a potted plant kept in a dark room for a few days turn blue black when tested for starch? Give reasons for your answer.",
+     "Vidyam LLM": "77",
+     "Llama 2 13b": "294",
+     "Mistral 7b": "187",
+     "ChatGPT": "236",
+     "Gemini": "214",
+      "Remarks": {
+       "Question": "Remarks",
+       "Answer": "Detailed explanation.",
+       "Vidyam LLM": "Vidyam LLM took only 77 tokens to generate the answer of the given question.",
+       "Llama 2 13b": "Llama 2 13b took 281% more tokens to generate the answer compared to Vidyam LLM.",
+       "Mistral 7b": "Mistral 7b took 142% more tokens to generate the answer compared to Vidyam LLM.",
+       "ChatGPT": "ChatGPT took 206% more tokens to generate the answer compared to Vidyam LLM.",
+       "Gemini": "Gemini took 177% more tokens to generate the answer compared to Vidyam LLM."
+     }
+ 
+     },
+     {
+      "Chapter Name": "Chapter-12-Electricity-and-Circuits",
+      "Question": "A fused bulb does not glow. Why?",
+      "Vidyam LLM": "21",
+      "Llama 2 13b": "88",
+      "Mistral 7b": "161",
+      "ChatGPT": "106",
+      "Gemini": "215",
+      "Remarks": {
+       "Question": "Remarks",
+       "Answer": "Detailed explanation.",
+       "Vidyam LLM": "Vidyam LLM took only 21 tokens to generate the answer of the given question.",
+       "Llama 2 13b": "Llama 2 13b took 319% more tokens to generate the answer compared to Vidyam LLM.",
+       "Mistral 7b": "Mistral 7b took 666% more tokens to generate the answer compared to Vidyam LLM.",
+       "ChatGPT": "ChatGPT took 404% more tokens to generate the answer compared to Vidyam LLM.",
+       "Gemini": "Gemini took 923% more tokens to generate the answer compared to Vidyam LLM."
+     }
+ 
+     },
+     {
+      "Chapter Name": "Chapter-4-Sorting-Materials-into-Groups",
+      "Question": "Differentiate among opaque, translucent and transparent materials, giving one example of each.",
+      "Vidyam LLM": "72",
+     "Llama 2 13b": "244",
+     "Mistral 7b": "122",
+     "ChatGPT": "323",
+     "Gemini": "196",
+      "Remarks": {
+       "Question": "Remarks",
+       "Answer": "Detailed explanation.",
+       "Vidyam LLM": "Vidyam LLM took only 72 tokens to generate the answer of the given question.",
+       "Llama 2 13b": "Llama 2 13b took 238% more tokens to generate the answer compared to Vidyam LLM.",
+       "Mistral 7b": "Mistral 7b took 69% more tokens to generate the answer compared to Vidyam LLM.",
+       "ChatGPT": "ChatGPT took 348% more tokens to generate the answer compared to Vidyam LLM.",
+       "Gemini": "Gemini took 172% more tokens to generate the answer compared to Vidyam LLM."
+     }
+ 
+     }
+
+   ]
+}

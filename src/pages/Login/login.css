@@ -1,0 +1,103 @@
+.login-container{
+    position: relative;
+   
+    height: 88.6vh;
+    overflow-y: hidden;
+    width: 100vw;
+    background: #2c5437;
+    width:100% ;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 5%;
+}
+
+
+
+.card {
+  border: 1px solid rgb(143, 143, 143);
+  /* padding: 0 30px; */
+  max-width: 450px;
+  /* margin-bottom: 150px; */
+  padding: 40px 20px;
+  background-color:#3D5430 ;
+}
+
+.card-title{
+  font-family: Arial, Helvetica, sans-serif;
+  color: #fff;  
+  
+}
+
+
+
+.form-group {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 10px;
+}
+.form-group label {
+  width: 150px;
+  color: #fff;
+}
+
+.button {
+  background-color: black;
+  background: none;
+  color: white;
+  margin-top: 30px;
+  text-align: center;
+}
+
+.loginBtn {
+  display: flex;
+  justify-content: center;  
+  background: none;
+  margin-top: 30px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #fff;
+  border: 1px solid rgb(59, 59, 59);
+  margin-left: 15px;
+  
+}
+
+
+.card img {
+  margin-bottom: 40px;
+}
+
+.form-group {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 10px;
+}
+.form-group label {
+  width: 150px;
+}
+
+.button {
+  background-color: black;
+  color: white;
+  margin-top: 30px;
+  text-align: center;
+}
+
+.login-btn {
+  display: flex;
+  justify-content: center;
+}
+
+
+@media only screen and (max-width: 768px) {
+  .login-container{ 
+    padding-top: 10%;
+  } 
+  
+  .card {
+      width: 300px;
+      padding: 20px 10px;
+      height: 300px;
+    }
+}

@@ -1,0 +1,167 @@
+@import url("https://fonts.googleapis.com/css2?family=Literata:wght@400;500;600&display=swap");
+
+/* Mission tabs (Models / Platforms / Products) */
+
+.mission-tabs-container {
+  width: 100%;
+  font-family: "Literata", serif;
+  color: #ffffff;
+}
+
+.mission-tabs-header {
+  display: flex;
+  width: 100%;
+  background: #4e7742; /* light green bar like reference */
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+}
+
+.mission-tab-button {
+  flex: 1;
+  padding: 14px 24px;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+/* hello */
+.mission-tab-button:not(.mission-tab-button-active):hover {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.mission-tab-button-active {
+  background: #0b160f; /* dark pill-like active state */
+  border-radius: 999px;
+  margin: 6px;
+  box-shadow: 0 0 18px rgba(247, 213, 139, 0.55); /* golden glow under active tab */
+}
+
+.mission-tabs-body {
+  background: #2c5537; /* matches darker mission area */
+  border-radius: 0 0 6px 6px;
+  padding: 24px 28px 12px 28px; /* tight bottom: less empty space under tab content */
+  margin-top: 0;
+  position: relative; /* for watermark */
+}
+
+.mission-tab-panel {
+  font-size: 1rem;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+.mission-tab-panel h5 {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.mission-tab-panel p {
+  margin-bottom: 12px;
+}
+
+/* Platforms tab — Vidyam OS + copilots */
+.mission-tab-panel-platforms {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.mission-tab-panel-platforms .platforms-main-heading {
+  font-family: "Literata", Arial, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #ffffff;
+  margin: 0 0 12px 0;
+}
+
+.mission-tab-panel-platforms .platforms-subheading {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: #e7eedd;
+  margin: 0 0 20px 0;
+}
+
+.mission-tab-panel-platforms .platforms-section-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-style: italic;
+  color: #ffffff;
+  margin: 18px 0 10px 0;
+  line-height: 1.4;
+}
+
+.mission-tab-panel-platforms .platforms-section-title:first-of-type {
+  margin-top: 0;
+}
+
+.mission-tab-panel-platforms .platforms-link {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.mission-tab-panel-platforms .platforms-link:hover {
+  color: #f7d58b;
+}
+
+.mission-tab-panel-platforms .platforms-footer {
+  margin-top: 12px;
+  margin-bottom: 0;
+  padding-top: 4px;
+  line-height: 1.6;
+  color: #e7eedd;
+}
+
+/* Golden highlight for emphasized text inside mission tabs */
+.mission-tab-panel strong {
+  color: #f7d58b;
+  font-weight: 600;
+}
+
+/* Top-right watermark image element - fixed position for all tabs */
+.mission-tabs-watermark {
+  position: absolute;
+  right: 24px;
+  top: -100px; /* moved higher up */
+  width: 340px; /* larger to fill background behind text */
+  height: auto;
+  opacity: 0.52; /* more visible but still subtle */
+  pointer-events: none;
+  z-index: 0; /* behind text */
+  transform: translateY(0); /* ensure no transform affects position */
+}
+
+/* Hide Products tab on all screen sizes */
+.mission-tab-products {
+  display: none !important;
+}
+
+@media only screen and (max-width: 768px) {
+  .mission-tab-button {
+    font-size: 1rem;
+    padding: 10px 12px;
+  }
+
+  .mission-tabs-body {
+    padding: 18px 16px;
+  }
+
+  /* Reorder tabs: Platforms first, then Models (already in correct order) */
+}
+
+/* Mobile-only: Hide sections when not active */
+@media only screen and (max-width: 768px) {
+  .vidyam-llm-section.mobile-hidden,
+  .saarthi-section.mobile-hidden,
+  .empowerment-infographic-section.mobile-hidden {
+    display: none !important;
+  }
+}
+
+/* Desktop: Hide sections when not active */
+.desktop-hidden {
+  display: none !important;
+}

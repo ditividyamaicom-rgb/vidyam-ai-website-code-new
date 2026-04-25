@@ -1,0 +1,127 @@
+.quiz-analytics {
+    display: flex;
+    
+    position: relative;
+    text-align: center;
+    height: 88vh;
+    background-color: rgb(252, 252, 252);
+    /* overflow: hidden; */
+  }
+
+.quiz-analytics .content {
+    width: 100vw;
+    margin-top: 0px;
+    border-top: 1px solid #e5e5e5;
+    margin-left: 70px;
+    padding-top: 5px;
+}
+
+.quiz-analytics .user-type-dropdown {
+    width: 20%;
+    height: 30px;
+}
+
+.analytic-topic {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    font-size: 1.8rem;
+}
+
+.data-container{
+    margin-top: 50px;
+    
+}
+
+.toggle-buttons .user-toggle-button {
+    background: none;
+    padding: 10px 32px;
+    margin-left: 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 20px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.quiz-analytics .content .total-quiz-count {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 60px;
+}
+
+.quiz-analytics .content .total-quiz-count .total-quiz-pie-container{
+    width: 400px;
+   height: auto;
+}
+
+.daily-quiz-count-container, .Subject-class-quiz-analytics {
+    margin-top: 5%;
+}
+
+.daily-quiz-count-container .daily-quiz-line-container{
+    width: 70%;
+}
+
+.daily-unique-users-container {
+    margin-top: 5%;
+}
+
+.daily-unique-users-container .daily-unique-users-bar-container{
+    width: 70%;
+}
+
+
+.quiz-analytics .class-dropdown {
+    text-align: start ;
+    margin-left: 20px;
+   
+}
+
+.quiz-analytics .class-number-dropdown{
+    
+    width: 20%;
+    height: 30px;
+}
+
+
+.chart-and-list {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 20px;
+    gap: 100px;
+  }
+  
+  .pie-chart {
+    /* flex: 1; */
+    width: 30%;
+  }
+  
+  .subject-list {
+    /* flex: 2; */
+    margin-left: 20px;
+  }
+  
+  .subject-list table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .subject-list th, .subject-list td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  /* .subject-list th {
+    background-color: #f2f2f2;
+  } */
+  
+  .Subject-class-quiz-analytics-container h4 {
+    text-align: start;
+    margin-top: 40px;
+  }

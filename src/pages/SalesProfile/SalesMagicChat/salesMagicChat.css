@@ -1,0 +1,259 @@
+.magic-email-container {
+    display: flex;
+    height: 88.6vh;
+    background-color: #fff;
+    overflow: hidden;
+    border-top: 1px solid #e5e5e5;
+    
+  }
+  
+  .magic-email-container .left-section {
+    width: 700px; /* Static width */
+    padding: 20px;
+    margin: 0 0 20px 20px;
+    box-sizing: border-box;
+    border-right: 1px solid #e5e5e5;
+    max-width: 900px;
+    
+  }
+  
+  .left-section .system-message {
+    font-size: 1.2rem;
+  }
+  
+  .left-section .system-message p {
+    font-weight: 500;
+    font-size: 1.2rem;
+  }
+  
+  .left-section textarea {
+    height: 350px;
+    /* min-height: 350px; */
+    font-size: 1rem;
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    color: black;
+    font-weight: 300;
+  }
+  
+  .left-section input {
+    height: 45px;
+    font-size: 1rem;
+    max-width: 100%;
+    border: none;
+  }
+  
+  /* .left-section .file {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  } */
+  
+  .left-section .file p {
+    font-size: 1rem;
+    margin: 0;
+    margin-left: 10px;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .left-section .file label {
+    font-size: 1rem;
+    width: fit-content;
+  }
+  
+  .left-section .file-input-container {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 10px;
+    margin-top: 30px;
+    /* width: 400px; */
+  }
+  
+  .upload-button {
+    font-size: 1rem;
+  }
+  
+  .left-section .file-list {
+    margin-top: 10px;
+  }
+  
+  .left-section .file-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    align-items: center;
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+  
+  .left-section .remove-file-icon {
+    cursor: pointer;
+    color: black;
+    margin-left: 5px;
+  }
+
+  .magic-email-container .left-section .clearBtn{
+    width: 20%;
+    height: 40px;
+    margin-top: 25px;
+    background: rgb(235, 233, 231);
+    border-radius: 10px;
+    border: none;
+    color: red;
+  }
+  .magic-email-container .left-section .buttonFlat{
+    margin-top: 20px;
+  }
+
+  .generate-btn{
+    font-family: Arial, Helvetica, sans-serif;
+    border: 1px solid rgb(59, 59, 59)
+  }
+  
+  .magic-email-container .right-section {
+    flex: 1; /* Allow right section to grow */
+    padding: 0 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+
+ /* .right-section::-webkit-scrollbar{
+    width: 5px;
+  } */
+
+  
+  .info-window {
+    font-size: 1rem;
+    margin-top: 25px;
+    overflow-y: auto; /* Enable vertical scrolling */
+    height: 100%;
+    text-align: center;
+  }
+  .info-window::-webkit-scrollbar {
+    width: 8px; /* Adjust the width of the scrollbar */
+  }
+  
+  .info-window::-webkit-scrollbar-thumb {
+    background-color: #cfcece; /* Color of the scrollbar thumb */
+    border-radius: 4px; /* Rounded corners for the thumb */
+  }
+  
+  .info-window::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Color of the scrollbar track */
+    border-radius: 4px; /* Rounded corners for the track */
+  }
+
+  
+
+  .info-window img {
+    max-width: 70%;
+    height: auto;
+    opacity: 0.6;
+    overflow: hidden;
+  }
+  
+  
+  .info-window p {
+    font-weight: 500;
+    font-size: 1.2rem;
+  }
+
+  
+  
+  .left-section .buttonFlat {
+    font-size: 1rem;
+    margin-top: 20px;
+  }
+  
+  .buttonFlat:disabled {
+    cursor: not-allowed;
+  }
+
+  .field-value-pairs {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .pair {
+    display: flex;
+    margin-bottom: 8px;
+    flex: 50%;
+  }
+  
+  .field {
+    font-weight: bold;
+    margin-right: 8px;
+  }
+  
+  .value {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .nested-pair {
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .nested-field {
+    flex: 1;
+    font-weight: bold;
+    margin-right: 4px;
+  }
+
+  .nested-value {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .nested-value:hover {
+    overflow: visible;
+  }
+
+  /* Style for disabled textarea */
+.system-message textarea:disabled {
+  cursor: not-allowed;
+}
+
+/* Style for disabled file input label */
+.file-input label.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Style for disabled file input label icon */
+.file-input label.disabled:hover {
+  background-color: transparent;
+}
+
+/* Style for disabled file input label icon */
+.file-input label.disabled:hover svg {
+  color: #ccc;
+}
+  
+  @media only screen and (max-width: 768px) {
+    .magic-email-container {
+      flex-direction: column;
+    }
+  
+    .left-section {
+      width: 100%;
+      border-right: none;
+      border-bottom: 1px solid #e5e5e5;
+    }
+  
+    .right-section {
+      padding: 20px;
+    }
+  }
+  

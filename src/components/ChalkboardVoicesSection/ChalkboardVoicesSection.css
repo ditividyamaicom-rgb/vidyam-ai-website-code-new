@@ -1,0 +1,542 @@
+/* Chalkboard: triangle of clouds per scene — t2/s2 apex (top center), t1/s1 + t3/s3 base corners hugging the figure */
+
+.chalkboard-voices {
+  --chalk-bg: #2e503b;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  background: linear-gradient(
+    180deg,
+    #243d2f 0%,
+    #2e503b 35%,
+    #2a4836 100%
+  );
+  /* No bottom padding — figures sit flush to section base above border */
+  padding: 1.5rem clamp(0.5rem, 2.5vw, 2rem) 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.chalkboard-voices-inner {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(0.1rem, 0.6vw, 0.4rem);
+  /* height follows content so no extra band of background below the desks */
+  min-height: 0;
+}
+
+.chalk-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1 1 0;
+  justify-content: flex-end;
+}
+
+.chalk-col--teacher,
+.chalk-col--student {
+  align-items: stretch;
+}
+
+/* Padding reserves vertical space for absolute clouds; no vh min-height (avoids empty strip below images) */
+.chalk-teacher-scene,
+.chalk-student-scene {
+  position: relative;
+  width: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+  padding-top: clamp(5.5rem, 14vh, 9.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.chalk-cloud {
+  position: absolute;
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+}
+
+.chalk-teacher-scene .chalk-cloud,
+.chalk-student-scene .chalk-cloud {
+  width: min(35%, 162px);
+  max-width: 162px;
+}
+
+/* Teacher: triangle — t2 apex (top) | t1 left base | t3 right base (same top = flat base) */
+.chalk-teacher-scene .chalk-cloud--t1 {
+  top: 36%;
+  left: 0;
+  right: auto;
+  transform: translate(10px, -4px);
+  /* teacher-wish.png is on black; screen removes black so the chalkboard shows through */
+  mix-blend-mode: screen;
+}
+
+.chalk-teacher-scene .chalk-cloud--t2 {
+  top: 0;
+  left: 50%;
+  right: auto;
+  transform: translate(calc(-50% + 10px), -6px);
+}
+
+.chalk-teacher-scene .chalk-cloud--t3 {
+  top: 36%;
+  right: 0;
+  left: auto;
+  transform: translate(-12px, -4px);
+}
+
+/* Student: same triangle — s2 top | s1 left base | s3 right base */
+.chalk-student-scene .chalk-cloud--s1 {
+  top: 36%;
+  left: 0;
+  right: auto;
+  transform: translate(10px, -4px);
+}
+
+.chalk-student-scene .chalk-cloud--s2 {
+  top: 0;
+  left: 50%;
+  right: auto;
+  transform: translate(calc(-50% + 10px), -6px);
+}
+
+.chalk-student-scene .chalk-cloud--s3 {
+  top: 36%;
+  right: 0;
+  left: auto;
+  transform: translate(-12px, -4px);
+}
+
+.chalk-figure {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  line-height: 0;
+  margin: auto 0 0 0;
+  padding: 0;
+}
+
+/* Teacher PNG has white padding below the desk; student asset is flush — clip + margin must remove that band so desk baselines match (7% was not enough) */
+.chalk-figure--zoom:not(.chalk-figure--student-crop) img {
+  display: block;
+  width: 100%;
+  max-width: min(100%, 600px);
+  height: auto;
+  max-height: min(56vh, 480px);
+  object-fit: contain;
+  object-position: bottom center;
+  clip-path: inset(0 0 12% 0);
+  -webkit-clip-path: inset(0 0 12% 0);
+  margin: 0 0 calc(-0.12 * min(56vh, 480px)) 0;
+  padding: 0;
+  transform: scale(1.18);
+  transform-origin: bottom center;
+}
+
+/* Student: crop from bottom, keep upper body / desk emphasis */
+.chalk-figure--student-crop {
+  overflow: hidden;
+  max-width: 600px;
+  width: 100%;
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0;
+  padding: 0;
+  align-items: flex-end;
+}
+
+.chalk-figure--student-crop img {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  max-height: min(56vh, 480px);
+  object-fit: contain;
+  object-position: bottom center;
+  clip-path: inset(0 0 16% 0);
+  -webkit-clip-path: inset(0 0 16% 0);
+  /* clip-path does not remove layout space; offset matches inset so the band below the visible desk is gone */
+  margin: 0 0 calc(-0.16 * min(56vh, 480px)) 0;
+  padding: 0;
+  transform: scale(1.14);
+  transform-origin: bottom center;
+}
+
+/* Center — bell */
+.chalk-col--bell {
+  flex: 0 0 auto;
+  align-self: flex-end;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 0.15rem 0;
+  min-width: 0;
+  width: auto;
+  align-content: flex-end;
+}
+
+/* Bell: transform-only; linear = visible motion in short keyframe spans (ease-in-out damps it).
+   vidyamChalkBell* names + -webkit- duplicate: older engines / compositor issues with generic names. */
+@keyframes vidyamChalkBellRing {
+  0%,
+  22%,
+  100% {
+    transform: scale(1) rotate(0deg) translate3d(0, 0, 0);
+  }
+  2% {
+    transform: scale(1.12) rotate(-10deg) translate3d(0, -3px, 0);
+  }
+  4% {
+    transform: scale(1.2) rotate(11deg) translate3d(0, -6px, 0);
+  }
+  6% {
+    transform: scale(1.26) rotate(-11deg) translate3d(0, -8px, 6px);
+  }
+  8% {
+    transform: scale(1.2) rotate(9deg) translate3d(0, -5px, 2px);
+  }
+  10% {
+    transform: scale(1.12) rotate(-7deg) translate3d(0, -3px, 0);
+  }
+  12% {
+    transform: scale(1.04) rotate(4deg) translate3d(0, 0, 0);
+  }
+  14%,
+  16% {
+    transform: scale(1) rotate(0deg) translate3d(0, 0, 0);
+  }
+}
+
+@-webkit-keyframes vidyamChalkBellRing {
+  0%,
+  22%,
+  100% {
+    -webkit-transform: scale(1) rotate(0deg) translate3d(0, 0, 0);
+    transform: scale(1) rotate(0deg) translate3d(0, 0, 0);
+  }
+  2% {
+    -webkit-transform: scale(1.12) rotate(-10deg) translate3d(0, -3px, 0);
+    transform: scale(1.12) rotate(-10deg) translate3d(0, -3px, 0);
+  }
+  4% {
+    -webkit-transform: scale(1.2) rotate(11deg) translate3d(0, -6px, 0);
+    transform: scale(1.2) rotate(11deg) translate3d(0, -6px, 0);
+  }
+  6% {
+    -webkit-transform: scale(1.26) rotate(-11deg) translate3d(0, -8px, 6px);
+    transform: scale(1.26) rotate(-11deg) translate3d(0, -8px, 6px);
+  }
+  8% {
+    -webkit-transform: scale(1.2) rotate(9deg) translate3d(0, -5px, 2px);
+    transform: scale(1.2) rotate(9deg) translate3d(0, -5px, 2px);
+  }
+  10% {
+    -webkit-transform: scale(1.12) rotate(-7deg) translate3d(0, -3px, 0);
+    transform: scale(1.12) rotate(-7deg) translate3d(0, -3px, 0);
+  }
+  12% {
+    -webkit-transform: scale(1.04) rotate(4deg) translate3d(0, 0, 0);
+    transform: scale(1.04) rotate(4deg) translate3d(0, 0, 0);
+  }
+  14%,
+  16% {
+    -webkit-transform: scale(1) rotate(0deg) translate3d(0, 0, 0);
+    transform: scale(1) rotate(0deg) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes vidyamChalkBellGlow {
+  0%,
+  22%,
+  100% {
+    opacity: 0.45;
+    transform: translate(-50%, -50%) scale(0.88);
+  }
+  3%,
+  10% {
+    opacity: 0.8;
+  }
+  5%,
+  8% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+}
+
+@-webkit-keyframes vidyamChalkBellGlow {
+  0%,
+  22%,
+  100% {
+    opacity: 0.45;
+    -webkit-transform: translate(-50%, -50%) scale(0.88);
+    transform: translate(-50%, -50%) scale(0.88);
+  }
+  5%,
+  8% {
+    opacity: 1;
+    -webkit-transform: translate(-50%, -50%) scale(1.5);
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+}
+
+.chalk-bell-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-bottom: 0;
+  transform: translateY(calc(-1.85rem - 40px));
+  /* perspective + 3D on same element as 2D translate can drop animations in some WebKit builds */
+  transform-style: flat;
+}
+
+.chalk-bell-wrap::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 152px;
+  height: 152px;
+  transform: translate(-50%, -50%) scale(0.88);
+  background: radial-gradient(
+    circle,
+    rgba(130, 210, 150, 0.35) 0%,
+    rgba(90, 150, 110, 0.14) 42%,
+    rgba(30, 60, 40, 0) 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform, opacity;
+  -webkit-animation-name: vidyamChalkBellGlow;
+  -webkit-animation-duration: 2.8s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-delay: 0s;
+  -webkit-animation-direction: normal;
+  -webkit-animation-fill-mode: both;
+  animation-name: vidyamChalkBellGlow;
+  animation-duration: 2.8s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: 0s;
+  animation-direction: normal;
+  animation-fill-mode: both;
+  animation-play-state: running;
+}
+
+/* Transforms on a div (not the img) — run ring here */
+.chalk-bell-anim {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: 50% 12%;
+  will-change: transform;
+  -webkit-backface-visibility: visible;
+  backface-visibility: visible;
+  -webkit-animation-name: vidyamChalkBellRing;
+  -webkit-animation-duration: 2.8s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-delay: 0s;
+  -webkit-animation-direction: normal;
+  -webkit-animation-fill-mode: both;
+  animation-name: vidyamChalkBellRing;
+  animation-duration: 2.8s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: 0s;
+  animation-direction: normal;
+  animation-fill-mode: both;
+  animation-play-state: running;
+}
+
+.chalk-bell-wrap .chalk-bell-img {
+  position: relative;
+  display: block;
+  width: 112px;
+  max-width: 116px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.4));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chalk-bell-wrap::before,
+  .chalk-bell-anim {
+    -webkit-animation: none !important;
+    animation: none !important;
+  }
+
+  .chalk-bell-wrap::before {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+}
+
+@media (max-width: 1100px) {
+  .chalk-teacher-scene .chalk-cloud--t1,
+  .chalk-teacher-scene .chalk-cloud--t2,
+  .chalk-teacher-scene .chalk-cloud--t3,
+  .chalk-student-scene .chalk-cloud--s1,
+  .chalk-student-scene .chalk-cloud--s2,
+  .chalk-student-scene .chalk-cloud--s3 {
+    max-width: min(148px, 32vw) !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .chalkboard-voices-inner {
+    flex-direction: column;
+    align-items: center;
+    min-height: 0;
+    gap: 0;
+  }
+
+  .chalk-col--teacher,
+  .chalk-col--student,
+  .chalk-col--bell {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 28rem;
+  }
+
+  .chalk-col--bell {
+    order: 2;
+    padding: 0.35rem 0 0;
+  }
+
+  .chalk-col--teacher {
+    order: 1;
+  }
+
+  .chalk-col--student {
+    order: 3;
+  }
+
+  .chalk-bell-wrap {
+    transform: translateY(calc(-1.5rem - 40px));
+  }
+
+  .chalk-teacher-scene,
+  .chalk-student-scene {
+    min-height: 400px;
+  }
+
+  .chalk-figure--zoom:not(.chalk-figure--student-crop) img {
+    max-height: 400px;
+    transform: scale(1.14);
+    clip-path: inset(0 0 12% 0);
+    -webkit-clip-path: inset(0 0 12% 0);
+    margin: 0 0 calc(-0.12 * min(48vh, 400px)) 0;
+  }
+
+  .chalk-figure--student-crop img {
+    max-height: min(48vh, 420px);
+    transform: scale(1.1) translateY(1.2rem);
+    clip-path: inset(0 0 14% 0);
+    -webkit-clip-path: inset(0 0 14% 0);
+    margin: 0 0 calc(-0.14 * min(48vh, 420px)) 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .chalkboard-voices {
+    padding: 1.1rem 0.5rem 0;
+  }
+
+  .chalk-teacher-scene,
+  .chalk-student-scene {
+    min-height: 0;
+    padding-top: clamp(3.5rem, 10vh, 5.5rem);
+  }
+
+  /* Mobile: same triangle + same nudges (up, t/s1-2 right, t/s3 left) */
+  .chalk-teacher-scene .chalk-cloud--t2,
+  .chalk-student-scene .chalk-cloud--s2 {
+    top: 0;
+    left: 50%;
+    transform: translate(calc(-50% + 8px), -5px);
+  }
+
+  .chalk-teacher-scene .chalk-cloud--t1,
+  .chalk-teacher-scene .chalk-cloud--t3 {
+    top: 32%;
+  }
+
+  .chalk-teacher-scene .chalk-cloud--t1 {
+    left: 0;
+    transform: translate(8px, -3px);
+  }
+
+  .chalk-teacher-scene .chalk-cloud--t3 {
+    right: 0;
+    left: auto;
+    transform: translate(-10px, -3px);
+  }
+
+  .chalk-student-scene .chalk-cloud--s1,
+  .chalk-student-scene .chalk-cloud--s3 {
+    top: 32%;
+  }
+
+  .chalk-student-scene .chalk-cloud--s1 {
+    left: 0;
+    transform: translate(8px, -3px);
+  }
+
+  .chalk-student-scene .chalk-cloud--s3 {
+    right: 0;
+    left: auto;
+    transform: translate(-10px, -3px);
+  }
+
+  .chalk-teacher-scene .chalk-cloud,
+  .chalk-student-scene .chalk-cloud {
+    max-width: min(136px, 36vw) !important;
+  }
+
+  .chalk-figure--zoom:not(.chalk-figure--student-crop) img {
+    max-width: 96%;
+    max-height: min(50vh, 400px);
+    transform: scale(1.08);
+    clip-path: inset(0 0 12% 0);
+    -webkit-clip-path: inset(0 0 12% 0);
+    margin: 0 0 calc(-0.12 * min(50vh, 400px)) 0;
+  }
+
+  .chalk-figure--student-crop img {
+    max-height: min(48vh, 380px);
+    clip-path: inset(0 0 13% 0);
+    -webkit-clip-path: inset(0 0 13% 0);
+    transform: scale(1.04);
+    margin: 0 0 calc(-0.13 * min(48vh, 380px)) 0;
+  }
+
+  .chalk-bell-wrap {
+    transform: translateY(calc(-0.95rem - 40px));
+  }
+
+  .chalk-bell-wrap .chalk-bell-img {
+    width: 98px;
+    max-width: 102px;
+  }
+}

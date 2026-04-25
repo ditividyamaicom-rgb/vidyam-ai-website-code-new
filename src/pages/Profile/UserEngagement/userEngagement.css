@@ -1,0 +1,23 @@
+.user-engagement-container {
+  display: flex;
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.user-engagement-content {
+  flex: 1;
+  padding: 40px;
+  margin-left: 250px;
+}
+
+.user-engagement-content h1 {
+  color: #164A2E;
+  font-family: 'Literata', serif;
+  margin-bottom: 20px;
+}
+
+.user-engagement-content p {
+  color: #333;
+  font-size: 1.1rem;
+}
+

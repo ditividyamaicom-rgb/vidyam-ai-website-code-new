@@ -1,0 +1,55 @@
+/* Standalone band above Teacher Brain Showcase — do not import into homeBody.css */
+
+.home-pre-showcase-band {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 2.25rem 5% 2rem;
+  background: linear-gradient(
+    180deg,
+    #1f3d2a 0%,
+    #1a2e22 45%,
+    #132218 100%
+  );
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.home-pre-showcase-band__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.home-pre-showcase-band__kicker {
+  font-family: "Literata", Georgia, serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(230, 219, 173, 0.85);
+  margin: 0 0 0.5rem;
+}
+
+.home-pre-showcase-band__title {
+  font-family: "Literata", Georgia, serif;
+  font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+  font-weight: 600;
+  color: #f4f1eb;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.home-pre-showcase-band__lede {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+  line-height: 1.6;
+  color: rgba(244, 241, 235, 0.78);
+  max-width: 44rem;
+  margin: 0.75rem auto 0;
+}
+
+@media (max-width: 768px) {
+  .home-pre-showcase-band {
+    padding: 1.75rem 7% 1.5rem;
+  }
+}

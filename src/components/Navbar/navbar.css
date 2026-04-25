@@ -1,0 +1,222 @@
+@import url("https://fonts.googleapis.com/css2?family=Literata:wght@400;500;600&display=swap");
+
+.home-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background: #2c5537;
+  font-family: "Literata", serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+}
+
+.home-navbar-interactive {
+  width: 100%;
+}
+
+.navbarContainer {
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 4vw;
+  /* Solid background like the screenshot */
+  background: #2c5537;
+  border-bottom: none; /* remove golden line under navbar */
+  box-shadow: none;
+}
+
+.navbar-logo-image {
+  height: auto;
+  max-height: 32px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.home-desktop-menu {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  margin-left: 64px;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex: 1;
+}
+
+.navbar-link {
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #fff3d9;
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 6px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar-link::after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  width: 0;
+  left: 0;
+  bottom: 0;
+  background: #f7d58b;
+  transition: width 0.3s ease;
+}
+
+.navbar-link:hover,
+.navbar-link:focus-visible {
+  color: #fff9eb;
+  transform: translateY(-2px);
+}
+
+.navbar-link:hover::after,
+.navbar-link:focus-visible::after {
+  width: 100%;
+}
+
+.home-buttons {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.navbar-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 28px;
+  border-radius: 999px;
+  border: 1.6px solid #ffffff;
+  background: transparent;
+  color: #fff3d9;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  cursor: pointer;
+}
+
+.navbar-cta:hover,
+.navbar-cta:focus-visible {
+  /* Filled button on hover, similar to design emphasis */
+  background: #fff8e2;
+  color: #184b30;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+}
+
+.navbar-cta:active {
+  transform: translateY(1px);
+}
+
+.profileIcon {
+  height: 32px;
+  width: 32px;
+  color: #f7d58b;
+  opacity: 0.95;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.45));
+}
+
+@media (max-width: 1024px) {
+  .home-desktop-menu {
+    margin-left: 24px;
+    gap: 20px;
+  }
+
+  .navbar-links {
+    gap: 24px;
+  }
+
+  .navbar-link {
+    font-size: 1rem;
+  }
+}
+
+/* Mobile navbar */
+.home-mobile-bar,
+.mobile-menu {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .navbarContainer {
+    padding: 12px 16px;
+  }
+  .desktop-logo {
+    display: none;
+  }
+  .home-desktop-menu {
+    display: none;
+  }
+  .home-mobile-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 8px;
+    padding-left: 0;
+  }
+  .hamburger-btn {
+    background: transparent;
+    border: 1.5px solid #fff;
+    color: #fff;
+    border-radius: 8px;
+    padding: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-right: auto; /* push icon to the extreme left */
+    margin-left: 0;
+  }
+  .mobile-logo {
+    max-height: 28px;
+    display: none;
+  }
+  .home-mobile-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto; /* keep actions to the right */
+  }
+  .mobile-cta {
+    padding: 6px 14px;
+    font-size: 0.95rem;
+  }
+  .mobile-menu {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: #2c5537;
+    padding: 12px 16px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+    z-index: 1001;
+  }
+  .mobile-link {
+    text-align: left;
+    width: 100%;
+  }
+}

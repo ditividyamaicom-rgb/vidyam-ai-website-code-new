@@ -1,0 +1,224 @@
+.blog-container {
+    height: 100%;
+    /* background-color: #233D2B; */
+    background: #3D5430;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-bottom: 20px;
+  }
+  
+  .blog-container .blog-head, .blog-content {
+    padding-left: 48px;
+    padding-top: 30px;
+    max-width: 90%;
+  }
+
+  .blog-container img {
+    max-width: 80%;
+    height: auto;
+  }
+  .blog-container section {
+    padding-left: 20px
+  }
+  .blog-container section ol li{
+    font-size: 1.2rem;
+  }
+  
+  .blog-container .blog-head p {
+    margin-top: 20px;
+    font-weight: lighter;
+  }
+  
+  .blog-container .blog-head-bottom {
+    margin-top: 70px;
+    border: 1px solid #fff;
+  }
+  
+  .blog-container .blog-content p  {
+    font-weight: 400;
+    font-size: 1.2rem;
+  }
+
+  .table-top {
+    margin-bottom: 10px;
+  }
+  
+  .blog-container .table-top {
+    display: flex;
+    width: 100%;
+    align-items: flex-end;
+    justify-content: flex-end;
+    overflow-x: auto;
+  }
+  
+  .blog-container .table-top span {
+    margin: 0 5px;
+    min-width: 40px;
+    /* margin-bottom: 5px; */
+  }
+  
+  .blog-container .table table  {
+    margin: 0;
+    border-radius: 0;
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    overflow: hidden;
+  }
+
+  
+  
+  .blog-container .table tr {
+    height: auto;
+    padding: 0;
+    border: 0.1px solid black;
+  }
+  
+  
+  /* .blog-container .table td {
+    text-align: center;
+  } */
+
+  .blog-container .token-count-table table {
+    margin: 0;
+    border-radius: 0;
+    border: 1rem hidden black;
+    border-collapse: collapse;
+    width: 60%;
+    table-layout: fixed;
+    overflow: hidden;
+  }
+  
+  .blog-container li, p, a, td {
+    font-size: 1rem;
+  }
+  
+  .blog-container th {
+    /* background-color: #3D5430; */
+    background: #3D5430;
+    color: #fff;
+    border: 0.1px solid black;
+  }
+  
+  .blog-container th,
+  td {
+    text-align: center;
+  }
+  
+  .blog-container th {
+    border-right: 0.5px solid black;
+  }
+  
+  .blog-container td {
+    /* background-color: #233D2B; */
+    background: #3D5430;
+    color: #fff;
+    border: 0.1px solid black;
+    padding: 20px;
+    margin: 0;
+  }
+  .blog-container .table td .remark{
+    background:'#2c5437'; 
+  }
+
+  .read-more-btn {
+    font-size: 0.9rem;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: underline;
+    opacity: 0.5;
+  }
+  
+  .table table td .tooltip {
+    visibility: hidden;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+  
+  .table table td:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+  }
+  
+  .pagination button {
+    font-size: 0.8rem !important;
+    border: none;
+    color: black;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition-duration: 0.4s;
+  }
+  
+  .pagination button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+
+
+/* Add this to your CSS file */
+@media screen and (min-width: 768px) {
+  .desktop-table {
+    display: block;
+  }
+  .mobile-table {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .desktop-table {
+    display: none;
+  }
+  .mobile-table {
+    display: block;
+    
+  }
+
+.blog-container .blog-head-bottom  {
+  margin-top: 0px ;
+}
+  .blog-container .blog-head, .blog-content {
+    /* padding: 10px; */
+    padding-top: 5px ;
+    max-width: 100%;
+  }
+  .blog-container .table table {
+    font-size: 0.9rem;
+  }
+
+  .blog-container .blog-head, .blog-content {
+    padding: 8% 7%;
+    max-width: 100%;
+    padding-left: 20px;
+  }
+
+  .blog-container .table table td {
+    padding: 5px;
+  }
+  
+}
+
+
+

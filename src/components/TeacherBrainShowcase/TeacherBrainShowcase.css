@@ -1,0 +1,921 @@
+/* Teacher Brain + copilots — matches reference: sage cards, gold accents, three-column */
+
+.teacher-brain-showcase {
+  --tbs-gold: #d4a84b;
+  --tbs-gold-bright: #e8c65a;
+  --tbs-gold-glow: rgba(212, 168, 75, 0.45);
+  --tbs-gold-aura: rgba(230, 190, 90, 0.5);
+  --tbs-gold-aura-faint: rgba(200, 160, 70, 0.18);
+  --tbs-bg: #132218;
+  --tbs-bg-texture: rgba(0, 0, 0, 0.15);
+  --tbs-card: #c8d2c0;
+  --tbs-card-ink: #1a221c;
+  --tbs-ink-muted: #3d4840;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--tbs-bg);
+  background-image: linear-gradient(
+      180deg,
+      rgba(25, 48, 35, 0.5) 0%,
+      transparent 40%,
+      rgba(10, 22, 16, 0.4) 100%
+    ),
+    radial-gradient(ellipse 120% 80% at 50% 35%, #1f3d2b 0%, var(--tbs-bg) 55%);
+  padding: 2.75rem clamp(1rem, 4vw, 3rem) 2.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.tbs-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Subtle horizontal gold “neural” lines behind the row */
+.tbs-neural-backdrop {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 51%;
+  height: 3rem;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 40px,
+    rgba(212, 168, 75, 0.08) 40px 41px
+  );
+  mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+  z-index: 0;
+}
+
+.tbs-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  /* Slightly wider middle track so the brain can use the full gap between the cards */
+  grid-template-columns: 1fr minmax(0, 1.2fr) 1fr;
+  /* Same row height as the tallest column (left/right cards) so the center can vertically center. */
+  align-items: stretch;
+  gap: 0.75rem 1.5rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  isolation: isolate;
+}
+
+/* Ambient haze: upper band only so it does not sit behind the heading text */
+.tbs-grid::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 5%;
+  height: 48%;
+  bottom: auto;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 90% 70% at 50% 42%,
+    var(--tbs-gold-aura-faint) 0%,
+    rgba(212, 168, 75, 0.06) 40%,
+    rgba(19, 34, 24, 0) 70%
+  );
+  filter: blur(22px);
+  opacity: 0.9;
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 55%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 55%,
+    transparent 100%
+  );
+  transform-origin: 50% 42%;
+}
+
+/* Before scroll-in: whole row looks dark and flat; gold wash is off */
+.teacher-brain-showcase:not(.teacher-brain-showcase--active) .tbs-grid {
+  filter: brightness(0.45) contrast(1.18) saturate(0.62);
+}
+
+.teacher-brain-showcase--active .tbs-grid {
+  animation: tbs-section-lighten 1.4s cubic-bezier(0.2, 0.85, 0.3, 1) forwards;
+  will-change: filter;
+}
+
+@keyframes tbs-section-lighten {
+  from {
+    filter: brightness(0.45) contrast(1.18) saturate(0.62);
+  }
+  to {
+    filter: none;
+  }
+}
+
+.teacher-brain-showcase:not(.teacher-brain-showcase--active) .tbs-grid::before {
+  opacity: 0;
+  transform: scale(0.86);
+  filter: blur(18px);
+}
+
+.teacher-brain-showcase--active .tbs-grid::before {
+  animation: tbs-ambient-gold-in 1.45s ease-out 0.08s both;
+}
+
+@keyframes tbs-ambient-gold-in {
+  from {
+    opacity: 0;
+    transform: scale(0.86);
+    filter: blur(16px);
+  }
+  to {
+    opacity: 0.9;
+    transform: scale(1);
+    filter: blur(22px);
+  }
+}
+
+.teacher-brain-showcase:not(.teacher-brain-showcase--active) .tbs-neural-backdrop {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.teacher-brain-showcase--active .tbs-neural-backdrop {
+  animation: tbs-neural-fade-in 0.8s ease 0.28s both;
+}
+
+@keyframes tbs-neural-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.teacher-brain-showcase:not(.teacher-brain-showcase--active) .tbs-kicker--gold {
+  opacity: 0.45;
+  filter: brightness(0.7);
+  text-shadow: none;
+}
+
+.teacher-brain-showcase--active .tbs-kicker--gold {
+  animation: tbs-kicker-reveal 0.85s ease 0.2s both;
+}
+
+@keyframes tbs-kicker-reveal {
+  from {
+    opacity: 0.45;
+    filter: brightness(0.7);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+.tbs-kicker--gold {
+  color: var(--tbs-gold-bright);
+  font-family: "Cormorant Garamond", "Literata", Georgia, "Times New Roman", serif;
+  font-size: clamp(1.02rem, 1.22vw, 1.2rem);
+  line-height: 1.4;
+  font-weight: 500;
+  text-align: center;
+  margin: 0 0 0.65rem 0;
+  min-height: 2.5em;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 24px var(--tbs-gold-glow);
+}
+
+.tbs-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.tbs-col--center {
+  align-items: center;
+  /* Vertically center brain + “Powered by” in the same band as the side cards. */
+  justify-content: center;
+  position: relative;
+  padding: 0 0.25rem;
+  min-height: 0;
+  align-self: stretch;
+}
+
+/* Nudge side cards toward the center (desktop three-column) */
+.tbs-col--left {
+  transform: translateX(clamp(0.65rem, 2.2vw, 1.75rem));
+}
+
+.tbs-col--right {
+  transform: translateX(calc(-1 * clamp(0.65rem, 2.2vw, 1.75rem)));
+}
+
+.tbs-connector {
+  /* Gold bars linking to the side cards — sit lower, below the brain band */
+  position: absolute;
+  top: 73%;
+  height: 2px;
+  width: 32%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.88;
+  border-radius: 1px;
+}
+
+.tbs-connector--to-left {
+  left: 0;
+  width: 38%;
+  transform: translate(-8%, -50%);
+  background: linear-gradient(90deg, transparent, var(--tbs-gold) 40%, #c49a2e);
+  box-shadow: 0 0 8px var(--tbs-gold-glow);
+}
+
+.tbs-connector--to-right {
+  right: 0;
+  width: 38%;
+  transform: translate(8%, -50%);
+  background: linear-gradient(90deg, #c49a2e, var(--tbs-gold) 60%, transparent);
+  box-shadow: 0 0 8px var(--tbs-gold-glow);
+}
+
+.tbs-center-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 1;
+  position: relative;
+  width: 100%;
+  flex: 0 0 auto;
+  isolation: isolate;
+}
+
+/* Glow layers scoped to the image only — does not sit behind the headings below */
+.tbs-brain-stack {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+}
+
+/* Horizontally wide bloom behind the brain only (container height = image height) */
+.tbs-brain-aura {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 260%;
+  min-width: 36rem;
+  max-width: 90vw;
+  height: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 50% 88% at 50% 48%,
+    rgba(220, 185, 95, 0.4) 0%,
+    rgba(212, 168, 75, 0.2) 38%,
+    rgba(19, 34, 24, 0) 70%
+  );
+  filter: blur(24px);
+  opacity: 0.92;
+  will-change: opacity, transform;
+  /* Fade out toward bottom so blur does not “pool” on the line below the art */
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 72%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 72%,
+    transparent 100%
+  );
+}
+
+.tbs-brain-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 130%;
+  max-width: min(44rem, 100vw);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--tbs-gold-aura) 0%,
+    rgba(212, 168, 75, 0.24) 40%,
+    rgba(19, 34, 24, 0) 64%
+  );
+  filter: blur(14px);
+  z-index: 1;
+  pointer-events: none;
+  will-change: opacity, transform;
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 78%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 78%,
+    transparent 100%
+  );
+}
+
+.tbs-brain {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  will-change: filter;
+}
+
+.tbs-powered-by {
+  position: relative;
+  z-index: 2;
+  font-family: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(0.92rem, 1.15vw, 1.1rem);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0.75rem 0 0.25rem 0;
+  /* Solid backdrop so any stray section glow does not change text */
+  text-shadow: 0 0 1px var(--tbs-bg), 0 0 2px var(--tbs-bg);
+}
+
+.tbs-powered-brand {
+  position: relative;
+  z-index: 2;
+  font-family: "Cormorant Garamond", "Literata", Georgia, serif;
+  color: var(--tbs-gold-bright);
+  font-size: clamp(1.85rem, 3.2vw, 2.5rem);
+  font-weight: 600;
+  margin: 0;
+  padding-top: 0;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  text-shadow:
+    0 0 1px var(--tbs-bg),
+    0 0 2px var(--tbs-bg),
+    0 0 12px var(--tbs-gold-glow);
+}
+
+/* Cards */
+.tbs-card {
+  background: var(--tbs-card);
+  border-radius: 20px;
+  padding: 1.1rem 1.1rem 1.25rem;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 50px rgba(200, 160, 70, 0.12);
+  color: var(--tbs-card-ink);
+  font-family: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.tbs-card-header {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: 0.4rem 0.5rem;
+  align-items: start;
+  margin-bottom: 0.9rem;
+}
+
+.tbs-card-title {
+  font-size: clamp(1.52rem, 2vw, 1.9rem);
+  font-weight: 700;
+  margin: 0;
+  color: #050a07;
+  font-family: "Cormorant Garamond", "Literata", Georgia, "Times New Roman", serif;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  align-self: center;
+  padding-top: 0.1rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+.tbs-card-illus {
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.45);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+/* Student + school art: solid card-colored backing + multiply knocks flat “paper” to sage */
+.tbs-col--left .tbs-card-illus,
+.tbs-col--right .tbs-card-illus {
+  background: var(--tbs-card);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  isolation: isolate;
+}
+
+.tbs-col--left .tbs-illus,
+.tbs-col--right .tbs-illus {
+  mix-blend-mode: multiply;
+}
+
+.tbs-illus {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 150px;
+  object-fit: contain;
+  object-position: center;
+}
+
+.tbs-feat-list {
+  list-style: none;
+  margin: 0 0 1rem 0;
+  padding: 0;
+}
+
+.tbs-feat {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.tbs-feat:last-child {
+  margin-bottom: 0;
+}
+
+.tbs-feat-icon.material-symbols-outlined {
+  flex: 0 0 1.4rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  font-size: 1.25rem;
+  line-height: 1.4rem;
+  color: var(--tbs-ink-muted);
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  margin-top: 0.1rem;
+}
+
+.tbs-feat-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.tbs-feat-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1a221c;
+  line-height: 1.3;
+  margin: 0 0 0.1rem 0;
+}
+
+.tbs-feat-body {
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: #2c332d;
+  margin: 0;
+}
+
+.tbs-cta {
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.58rem 1rem;
+  border-radius: 999px;
+  background: #f0ebe2;
+  color: #1a231c;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: visible;
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease;
+  font-family: "Source Sans 3", system-ui, sans-serif;
+}
+
+.tbs-cta:hover {
+  background: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.tbs-cta:focus-visible {
+  outline: 2px solid #2c5437;
+  outline-offset: 2px;
+}
+
+.tbs-cta-arrow {
+  margin-left: 0.2rem;
+  font-size: 1.05em;
+}
+
+.tbs-sparkle {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1rem;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.7rem;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  opacity: 0.4;
+  transition: opacity 0.6s ease 1s;
+}
+
+.teacher-brain-showcase--active .tbs-sparkle {
+  opacity: 0.6;
+  animation: tbs-sparkle-shimmer 3s ease-in-out 1.2s infinite;
+}
+
+@keyframes tbs-sparkle-shimmer {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+/* —— In-view: brain starts dim, then “ignites” with glow; CTAs get golden halos —— */
+
+.teacher-brain-showcase:not(.teacher-brain-showcase--active) .tbs-brain {
+  filter: brightness(0.18) contrast(1.02) saturate(0.72)
+    drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent);
+}
+
+.teacher-brain-showcase--active .tbs-brain {
+  animation: tbs-brain-ignite 1.5s cubic-bezier(0.22, 0.8, 0.36, 1) forwards;
+}
+
+@keyframes tbs-brain-ignite {
+  0% {
+    filter: brightness(0.18) contrast(1.02) saturate(0.72)
+      drop-shadow(0 0 0 rgba(212, 168, 75, 0)) drop-shadow(0 0 0 rgba(212, 168, 75, 0));
+  }
+  45% {
+    filter: brightness(0.75) contrast(0.98) saturate(0.95)
+      drop-shadow(0 0 12px rgba(212, 168, 75, 0.5))
+      drop-shadow(0 0 26px rgba(200, 150, 60, 0.35));
+  }
+  100% {
+    filter: brightness(1) contrast(1) saturate(1)
+      drop-shadow(0 0 16px var(--tbs-gold-glow))
+      drop-shadow(0 0 36px rgba(212, 168, 75, 0.32));
+  }
+}
+
+.teacher-brain-showcase:not(.teacher-brain-showcase--active) .tbs-brain-aura {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.78);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.teacher-brain-showcase:not(.teacher-brain-showcase--active) .tbs-brain-glow {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.72);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.teacher-brain-showcase--active .tbs-brain-aura {
+  animation: tbs-aura-ignite 1.35s ease-out 0.04s both;
+}
+
+.teacher-brain-showcase--active .tbs-brain-glow {
+  animation: tbs-glow-ignite 1.2s ease-out 0.1s both;
+}
+
+@keyframes tbs-aura-ignite {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.78);
+  }
+  100% {
+    opacity: 0.92;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes tbs-glow-ignite {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.72);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.teacher-brain-showcase:not(.teacher-brain-showcase--active) .tbs-connector {
+  opacity: 0;
+}
+
+.teacher-brain-showcase--active .tbs-connector {
+  animation: tbs-connector-ignite 0.9s ease-out 0.7s both;
+}
+
+@keyframes tbs-connector-ignite {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.88;
+  }
+}
+
+.teacher-brain-showcase:not(.teacher-brain-showcase--active) .tbs-powered-by,
+.teacher-brain-showcase:not(.teacher-brain-showcase--active) .tbs-powered-brand {
+  opacity: 0.35;
+  transform: translateY(8px);
+  filter: blur(0.2px);
+}
+
+.teacher-brain-showcase--active .tbs-powered-by {
+  animation: tbs-heading-appear 0.7s ease-out 0.85s both;
+}
+
+.teacher-brain-showcase--active .tbs-powered-brand {
+  animation: tbs-heading-appear 0.75s ease-out 0.95s both;
+}
+
+@keyframes tbs-heading-appear {
+  0% {
+    opacity: 0.32;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tbs-cta::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 9999px;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  border: 1.5px solid rgba(200, 155, 55, 0.55);
+  box-shadow: 0 0 0 0 rgba(212, 168, 75, 0.35);
+}
+
+.teacher-brain-showcase:not(.teacher-brain-showcase--active) .tbs-cta::after {
+  display: none;
+}
+
+.teacher-brain-showcase--active .tbs-col--left .tbs-cta::after {
+  animation: tbs-cta-halo-appear 0.95s ease-out 0.5s both,
+    tbs-cta-halo-breathe 2.8s ease-in-out 1.4s infinite;
+}
+
+.teacher-brain-showcase--active .tbs-col--right .tbs-cta::after {
+  animation: tbs-cta-halo-appear 0.95s ease-out 0.68s both,
+    tbs-cta-halo-breathe 2.8s ease-in-out 1.55s infinite;
+}
+
+@keyframes tbs-cta-halo-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+    box-shadow: 0 0 0 0 rgba(212, 168, 75, 0);
+    border-color: rgba(200, 160, 60, 0.15);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 18px 3px rgba(200, 160, 60, 0.35),
+      0 0 32px 4px rgba(200, 150, 50, 0.2);
+    border-color: rgba(210, 170, 65, 0.65);
+  }
+}
+
+@keyframes tbs-cta-halo-breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 18px 3px rgba(200, 160, 60, 0.35),
+      0 0 32px 4px rgba(200, 150, 50, 0.2);
+    filter: blur(0);
+  }
+  50% {
+    box-shadow: 0 0 28px 7px rgba(220, 180, 80, 0.5),
+      0 0 50px 8px rgba(200, 150, 50, 0.3);
+  }
+}
+
+.teacher-brain-showcase--active .tbs-card {
+  transition: box-shadow 0.8s ease 0.3s;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 50px rgba(200, 160, 70, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tbs-brain-aura,
+  .tbs-brain-glow,
+  .tbs-connector,
+  .tbs-powered-by,
+  .tbs-powered-brand,
+  .tbs-sparkle,
+  .tbs-cta::after,
+  .tbs-grid,
+  .tbs-grid::before,
+  .tbs-neural-backdrop,
+  .tbs-kicker--gold {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .teacher-brain-showcase--active .tbs-grid,
+  .teacher-brain-showcase:not(.teacher-brain-showcase--active) .tbs-grid {
+    filter: none !important;
+  }
+
+  .teacher-brain-showcase--active .tbs-grid::before {
+    opacity: 0.9;
+    transform: scale(1);
+    filter: blur(22px);
+  }
+
+  .teacher-brain-showcase--active .tbs-neural-backdrop,
+  .teacher-brain-showcase:not(.teacher-brain-showcase--active) .tbs-neural-backdrop {
+    opacity: 1;
+    transform: none;
+  }
+
+  .teacher-brain-showcase--active .tbs-kicker--gold,
+  .teacher-brain-showcase:not(.teacher-brain-showcase--active) .tbs-kicker--gold {
+    opacity: 1;
+    filter: none;
+    text-shadow: 0 0 24px var(--tbs-gold-glow);
+  }
+
+  .teacher-brain-showcase--active .tbs-brain,
+  .teacher-brain-showcase:not(.teacher-brain-showcase--active) .tbs-brain {
+    animation: none !important;
+  }
+
+  .teacher-brain-showcase--active .tbs-brain {
+    filter: brightness(1) contrast(1) saturate(1)
+      drop-shadow(0 0 16px var(--tbs-gold-glow))
+      drop-shadow(0 0 36px rgba(212, 168, 75, 0.32));
+  }
+
+  .teacher-brain-showcase--active .tbs-brain-aura {
+    opacity: 0.92;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .teacher-brain-showcase--active .tbs-brain-glow {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .teacher-brain-showcase--active .tbs-connector {
+    opacity: 0.88;
+  }
+
+  .teacher-brain-showcase--active .tbs-powered-by,
+  .teacher-brain-showcase--active .tbs-powered-brand {
+    opacity: 1;
+    transform: none;
+  }
+
+  .teacher-brain-showcase--active .tbs-sparkle {
+    opacity: 0.6;
+  }
+
+  .teacher-brain-showcase--active .tbs-cta::after {
+    display: block;
+    opacity: 0.9;
+    transform: none;
+    box-shadow: 0 0 20px 4px rgba(200, 160, 60, 0.35);
+  }
+
+  .teacher-brain-showcase:not(.teacher-brain-showcase--active) .tbs-cta::after {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .tbs-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "center center"
+      "left right";
+  }
+
+  .tbs-col--left {
+    grid-area: left;
+  }
+
+  .tbs-col--center {
+    grid-area: center;
+    padding: 0 0 0.5rem;
+  }
+
+  .tbs-col--right {
+    grid-area: right;
+  }
+
+  .tbs-connector {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .teacher-brain-showcase {
+    padding: 1.75rem 1rem 1.5rem;
+  }
+
+  .tbs-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas: none;
+  }
+
+  .tbs-col--left,
+  .tbs-col--right,
+  .tbs-col--center {
+    grid-area: auto;
+  }
+
+  .tbs-col--center {
+    order: -1;
+  }
+
+  .tbs-col--left,
+  .tbs-col--right {
+    transform: none;
+  }
+
+  .tbs-brain-aura {
+    width: 150%;
+    min-width: 0;
+    filter: blur(20px);
+  }
+
+  .tbs-brain {
+    max-width: min(100%, 100vw - 2rem);
+  }
+
+  .tbs-card-header {
+    grid-template-columns: 1fr;
+  }
+
+  .tbs-card-illus {
+    min-height: 100px;
+  }
+}
+
+@media (max-width: 400px) {
+  .tbs-feat-icon.material-symbols-outlined {
+    font-size: 1.1rem;
+  }
+
+  .tbs-feat-title {
+    font-size: 0.8rem;
+  }
+
+  .tbs-feat-body {
+    font-size: 0.75rem;
+  }
+}

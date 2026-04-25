@@ -1,0 +1,28 @@
+
+.profilePage{
+    /* display: flex;
+    align-items: center;
+    width: 100vw;
+    height: 100vh; */
+    display: flex;
+    
+    position: relative;
+    
+    height: 90vh;
+    background-color: rgb(252, 252, 252);
+}
+
+.content {
+    /* margin-left: 70px; */
+    /* display:flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* height: 100%; */
+    /* width: 100%; */
+    /* font-size: 1.5rem; */
+    /* margin: 20px; */
+
+    width: 100vw;
+    margin-top: 0px;
+    border-top: 1px solid #e5e5e5;
+}

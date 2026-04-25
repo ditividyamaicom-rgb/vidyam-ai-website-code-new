@@ -1,0 +1,108 @@
+.user-data-expose {
+    display: flex;
+    
+    position: relative;
+    text-align: center;
+    /* height: 88vh; */
+    background-color: rgb(252, 252, 252);
+    /* overflow: hidden; */
+  }
+  
+  .content {
+    width: 100vw;
+    margin-top: 0px;
+    border-top: 1px solid #e5e5e5;
+    margin-left: 70px;
+  }
+  .header {
+    display: flex;
+    align-items: center; /* Align items vertically center */
+    justify-content: space-between; /* Distribute space between items */
+  }
+  
+  h2 {
+    flex-grow: 1; /* Allow the h2 to grow and take up available space */
+    text-align: center; /* Center align the text within the h2 */
+  }
+  
+  button {
+    font-family: Arial, Helvetica, sans-serif !important; 
+    margin-left: auto;
+  }
+  
+  table {
+    margin: 1rem;
+    border-radius: 2rem;
+    border: 1rem hidden #443C68;
+    border-collapse: collapse;
+    box-shadow: 0 0 0 1px black;
+    overflow: hidden;
+    /* width: 10vw; */
+    /* min-width: 9rem; */
+  }
+  
+  li, p, a, td{
+    font-size: 1rem;
+    /* line-height: 1.6; */
+  }
+  
+  thead {
+    /* font-size: 1.8rem; */
+    background-color: #443C68;
+    color: #fff;
+  }
+  
+  th,
+  td {
+    border: 1px solid #443C68;
+    min-width: 10rem;
+    
+  }
+  th.unwrap{
+    border: 1px solid #443C68;
+    min-width: 10rem;
+    max-width: 25rem;
+    border-right: 0.5px solid black;
+  }
+
+  td.unwrap{
+    border: 1px solid #443C68;
+    min-width: 10rem;
+    max-width: 3500rem;
+    border-right: 0.5px solid black;
+  }
+
+  th.wrap{
+    border: 1px solid #443C68;
+    min-width: 10rem;
+    max-width: 25rem;
+    border-right: 0.5px solid black;
+    word-wrap: break-word;      /* legacy support */
+    word-break: break-word;     /* modern */
+    overflow-wrap: anywhere;    /* best option for long links */
+    white-space: normal;        /* allow wrapping */
+    padding: 1.5rem;
+    /* line-height: 1.7; */
+  }
+
+  td.wrap{
+    border: 1px solid #443C68;
+    min-width: 10rem;
+    max-width: 3500rem;
+    border-right: 0.5px solid black;
+    word-wrap: break-word;      /* legacy support */
+    word-break: break-word;     /* modern */
+    overflow-wrap: anywhere;    /* best option for long links */
+    white-space: normal;        /* allow wrapping */
+    padding: 1.5rem;
+    /* line-height: 1.7; */
+  }
+  
+
+  th{
+    border-right: 0.5px solid black;
+  }
+  
+  td {
+    /* font-size: 1.4rem; */
+  }
